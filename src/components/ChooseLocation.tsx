@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useWindowSize } from "@/hooks/windowWidth";
 
 type Location = {
-  country: string | null;
+  country: string;
 };
 
 type ChooseLocationProps = Location & {

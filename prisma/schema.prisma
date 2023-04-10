@@ -11,26 +11,30 @@ datasource db {
 }
 
 model SigleVisit {
-  id            Int      @id @default(autoincrement())
+  id            Int       @id @default(autoincrement())
   studentsCount Int
   teachersCount Int
   havePayedTour Boolean
   school        String
   grade         String
   municipality  String?
-  country       String?
+  country       String
   teacher       String
-  museum        Museum   @relation(fields: [museumId], references: [id])
+  phone         String
+  email         String?
+  museum        Museum    @relation(fields: [museumId], references: [id])
   museumId      Int
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  testCreateAt  DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }
 
 model Museum {
   id         Int          @id @default(autoincrement())
-  name       String?      @unique
+  name       String       @unique
   email      String       @unique
   phone      String       @unique
+  password   String
   visits     Visit[]
   SigleVisit SigleVisit[]
   createdAt  DateTime     @default(now())
@@ -59,7 +63,7 @@ model Visit {
 model Teacher {
   id          Int      @id @default(autoincrement())
   name        String
-  phoneNumber String?
+  phoneNumber String
   email       String?
   visits      Visit[]
   createdAt   DateTime @default(now())
@@ -68,7 +72,7 @@ model Teacher {
 
 model School {
   id        Int      @id @default(autoincrement())
-  name      String?  @unique
+  name      String   @unique
   email     String?  @unique
   phone     String?  @unique
   visits    Visit[]

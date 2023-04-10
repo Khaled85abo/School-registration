@@ -3,8 +3,10 @@ import Image from "next/image";
 import sweden from "../assets/svg/sweden.svg";
 import world from "../assets/svg/world.svg";
 import styled from "styled-components";
+import municipalities from "@/assets/JSON/municipalities";
+import countries from "@/assets/JSON/countries";
 type AddressData = {
-  country: string | null;
+  country: string;
   municipality: string | undefined;
 };
 type AddressFormProps = AddressData & {
@@ -20,13 +22,25 @@ const AddressForm = ({
       <Wrapper style={{ textAlign: "center" }}>
         <h2>Sweden</h2>
         <div className="form-wrapper">
-          <input
+          {/* <input
             type="text"
             placeholder="Vilken Kommun?"
             required
             value={municipality}
             onChange={(e) => updateFields({ municipality: e.target.value })}
-          />
+          /> */}
+          <select
+            value={municipality}
+            onChange={(e) => {
+              updateFields({ municipality: e.target.value });
+            }}>
+            <option value="">--Please choose an option--</option>
+            {municipalities.map((municipality) => (
+              <option key={municipality.code} value={municipality.name}>
+                {municipality.name}
+              </option>
+            ))}
+          </select>
         </div>
         <Image src={sweden} alt="" height="400" />
       </Wrapper>
@@ -38,13 +52,18 @@ const AddressForm = ({
       <Wrapper>
         <h2>World</h2>
         <div className="form-wrapper">
-          <input
-            type="text"
-            placeholder="From which Country?"
-            required
-            value={country!}
-            onChange={(e) => updateFields({ country: e.target.value })}
-          />
+          <select
+            value={country}
+            onChange={(e) => {
+              updateFields({ country: e.target.value });
+            }}>
+            <option value="">--Please choose an option--</option>
+            {countries.map((country) => (
+              <option key={country.code} value={country.name}>
+                {country.name}
+              </option>
+            ))}
+          </select>
         </div>
         <Image src={world} alt="" height="400" />
       </Wrapper>

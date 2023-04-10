@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Wrapper } from "./StyledComponents";
 type UserData = {
-  fullName: string;
+  teacher: string;
   phone: string | undefined;
   email: string | undefined;
 };
@@ -10,7 +10,7 @@ type TeacherFormProps = UserData & {
 };
 
 const TeacherForm = ({
-  fullName,
+  teacher,
   phone,
   email,
   updateFields,
@@ -21,9 +21,9 @@ const TeacherForm = ({
       <div className="form-wrapper">
         <label>First Name*</label>
         <input
-          value={fullName}
+          value={teacher}
           onChange={(e) => {
-            updateFields({ fullName: e.target.value });
+            updateFields({ teacher: e.target.value });
           }}
           type="text"
           autoFocus

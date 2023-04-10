@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Inter } from "next/font/google";
 import AddressForm from "@/components/AddressForm";
@@ -10,6 +10,7 @@ import ChooseLocation from "@/components/ChooseLocation";
 import { useMultistepForm } from "@/hooks/useMulitstepForm";
 import backSvg from "@/assets/svg/back.svg";
 import nextSvg from "@/assets/svg/next.svg";
+import AccountForm from "@/components/AccountForm";
 
 export const CLASSES = {
   kinderGarden: "Kinder Garden",
@@ -44,34 +45,37 @@ export type Visit = {
   havePayedTour: boolean;
 };
 export type FormData = {
-  country: string | null;
+  country: string;
   municipality?: string;
   school: string;
-  classGrade: Class | null;
+  grade: Class;
   studentsCount: number;
   teachersCount: number;
   havePayedTour: boolean;
-  fullName: string;
+  teacher: string;
   phone?: string;
   email?: string;
+  museumId: number | null;
 };
 const INITIAL_DATA: FormData = {
-  country: null,
+  country: "",
   school: "Test school",
-  classGrade: null,
+  grade: CLASSES.kinderGarden,
   municipality: "Stockholm",
   studentsCount: 15,
   teachersCount: 3,
   havePayedTour: false,
-  fullName: "Khaled Abo",
+  teacher: "Khaled Abo",
   phone: "0762440447",
   email: "",
+  museumId: 12313,
 };
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const [data, setData] = useState(INITIAL_DATA);
-
+  const [showLogin, setShowLogin] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   function updateFields(fields: Partial<FormData>) {
     setData((prev) => {
       return { ...prev, ...fields };
@@ -102,7 +106,7 @@ export default function Home() {
       updateFields={updateFields}
     />,
     <TeacherForm
-      fullName={data.fullName}
+      teacher={data.teacher}
       phone={data.phone}
       email={data.email}
       updateFields={updateFields}
@@ -113,16 +117,47 @@ export default function Home() {
       studentsCount={data.studentsCount}
       teachersCount={data.teachersCount}
       havePayedTour={data.havePayedTour}
-      classGrade={data.classGrade}
+      grade={data.grade}
     />,
   ]);
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (currentStepIndex == steps.length - 1) {
+      setDisabled(true);
       console.log("submitting Data to be saved: ", data);
+      const res = await fetch("/api/register", {
+        method: "Post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify(data),
+      });
+      goTo(0);
+      setDisabled(false);
     } else {
       next();
     }
+  }
+
+  const toggleLgoinListner = (e: KeyboardEvent) => {
+    if (e.ctrlKey && e.key == "l") {
+      setShowLogin((prev) => !prev);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", toggleLgoinListner);
+
+    return () => window.removeEventListener("keydown", toggleLgoinListner);
+  }, []);
+
+  if (showLogin) {
+    return (
+      <AppWrapper className="bg-img">
+        <AccountForm />
+      </AppWrapper>
+    );
   }
   return (
     <AppWrapper className="bg-img">
@@ -143,7 +178,7 @@ export default function Home() {
         </PrevButton>
         <NextButton>
           {
-            <button type="submit" disabled={data.country == null}>
+            <button type="submit" disabled={!data.country || disabled}>
               {isLastStep ? (
                 <span>Send</span>
               ) : (
