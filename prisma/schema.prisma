@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model SigleVisit {
+  id            Int      @id @default(autoincrement())
+  studentsCount Int
+  teachersCount Int
+  havePayedTour Boolean
+  school        String
+  grade         String
+  municipality  String?
+  country       String?
+  teacher       String
+  museum        Museum   @relation(fields: [museumId], references: [id])
+  museumId      Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Museum {
+  id         Int          @id @default(autoincrement())
+  name       String?      @unique
+  email      String       @unique
+  phone      String       @unique
+  visits     Visit[]
+  SigleVisit SigleVisit[]
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+}
+
+model Visit {
+  id            Int      @id @default(autoincrement())
+  studentsCount Int
+  teachersCount Int
+  havePayedTour Boolean
+  school        School   @relation(fields: [schoolId], references: [id])
+  schoolId      Int
+  grade         String
+  local         Boolean
+  municipality  String?
+  country       String?
+  teacher       Teacher? @relation(fields: [teacherId], references: [id])
+  teacherId     Int?
+  museum        Museum   @relation(fields: [museumId], references: [id])
+  museumId      Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Teacher {
+  id          Int      @id @default(autoincrement())
+  name        String
+  phoneNumber String?
+  email       String?
+  visits      Visit[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model School {
+  id        Int      @id @default(autoincrement())
+  name      String?  @unique
+  email     String?  @unique
+  phone     String?  @unique
+  visits    Visit[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
