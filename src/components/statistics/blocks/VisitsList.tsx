@@ -1,51 +1,19 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
+import { getRelativeDateIntl } from "@/utils/relativeTime";
 
-const Orders = ({ data }) => {
+const Visits = ({ data }: { data: any }) => {
   const [totTime, setTotTime] = useState(0);
   const [waitPercentage1, setWaitPercentage1] = useState(0);
   const [waitPercentage2, setWaitPercentage2] = useState(0);
 
-  useEffect(() => {
-    if (data.uninvoicedOrders.length > 0) {
-      const ordersBlock = document.querySelector(".ordersBlock");
-      const ordersBlockHeight = ordersBlock.offsetHeight;
-
-      const innerContainer = document.querySelector(".innerContainer");
-      const innerContainerHeight = innerContainer.offsetHeight;
-      const ordersContainer = document.querySelector(".ordersContainer");
-
-      const order = document.querySelector(".order");
-      const orderHeight = order.offsetHeight + 35;
-
-      const ordersOnScreen = ordersBlockHeight / orderHeight;
-
-      const totTime =
-        (data.orders.length - Math.floor(ordersOnScreen)) * 5 + 20;
-      const waitPercentage = (10 / totTime) * 100;
-
-      setTotTime(totTime);
-      setWaitPercentage1(waitPercentage + "%");
-      setWaitPercentage2(waitPercentage + 50 + "%");
-
-      if (ordersBlockHeight < innerContainerHeight) {
-        ordersContainer.classList.add("scroll");
-      }
-    }
-  }, [data]);
-
   return (
-    <StyledOrders
-      totTime={totTime}
-      wait1={waitPercentage1}
-      wait2={waitPercentage2}
-      className="ordersBlock"
-    >
+    <StyledOrders className="ordersBlock">
       <div className="ordersContainer">
         <div className="innerContainer">
           {Array.isArray(data.uninvoicedOrders) &&
             data.uninvoicedOrders.length > 0 &&
-            data.uninvoicedOrders.map((data, index) => {
+            data.uninvoicedOrders.map((data: any, index: any) => {
               const {
                 OrderNr,
                 OrdLevAdr1,
@@ -72,27 +40,24 @@ const Orders = ({ data }) => {
 
               return (
                 <div className="order" key={index}>
+                  <div className="date">
+                    {dateArray && getRelativeDateIntl(new Date(dateArray[0]))}
+                  </div>
                   <div className="orderNum"># {OrderNr}</div>
                   <div className="status">
                     <div
                       className="indicator"
-                      style={{ backgroundColor: "#E5C68E" }}
-                    ></div>
+                      style={{ backgroundColor: "#E5C68E" }}></div>
                     {OrdStat.status}
                   </div>
                   <div className="name">
-                    Shipping to{" "}
+                    School
                     <span className="bold">{OrdLevAdr1 || "N/A"}</span>
                   </div>
-                  <div className="date">
-                    Ordered: {dateArray && dateArray[0]}
-                  </div>
+
                   <div>
-                    Total value:{" "}
-                    <span className="bold">
-                      {Math.round(OhOrdSumInklMoms).toLocaleString()}
-                    </span>
-                    <span className="currency"> SEK</span>
+                    <p>Name:</p>
+                    <p>Phone Number:</p>
                   </div>
                 </div>
               );
@@ -104,41 +69,13 @@ const Orders = ({ data }) => {
 };
 
 const StyledOrders = styled.div`
-  height: calc(90vh - 8vh);
+  // height: calc(90vh - 8vh);
   margin-top: 4vh;
-  overflow: hidden;
 
   .ordersContainer {
     height: fit-content;
     padding: 5px 100px;
     padding-bottom: 63px;
-  }
-
-  .ordersContainer.scroll {
-    animation: scroll ${(props) => props.totTime}s linear;
-    animation-iteration-count: infinite;
-  }
-
-  @keyframes scroll {
-    0% {
-      transform: translateY(0%);
-    }
-
-    ${(props) => props.wait1} {
-      transform: translateY(0%);
-    }
-
-    50% {
-      transform: translateY(calc(-100% + (90vh - 63px)));
-    }
-
-    ${(props) => props.wait2} {
-      transform: translateY(calc(-100% + (90vh - 63px)));
-    }
-
-    100% {
-      transform: translateY(0%);
-    }
   }
 
   .order {
@@ -151,7 +88,7 @@ const StyledOrders = styled.div`
     margin-bottom: 35px;
     padding: 1.8vh 3%;
     display: grid;
-    grid-template-columns: 15% 15% auto 20% 20%;
+    grid-template-columns: 15% 15% auto 30% 20%;
     align-items: center;
     border-radius: 3vh;
 
@@ -198,7 +135,6 @@ const StyledOrders = styled.div`
     }
 
     .date {
-      color: rgba(51, 51, 51, 0.54);
       font-size: 1.9vh;
     }
 
@@ -208,4 +144,4 @@ const StyledOrders = styled.div`
   }
 `;
 
-export default Orders;
+export default Visits;

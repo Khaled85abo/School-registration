@@ -16,10 +16,10 @@ export const months = [
   "Nov",
   "Dec",
 ];
-const getPercentage = (sales, budget) => {
+const getPercentage = (sales: number, budget: number) => {
   return (sales * 100) / budget;
 };
-const QuotaPie = ({ seller }) => {
+const QuotaPie = ({ seller }: { seller: any }) => {
   console.log("Seller obj: ", seller);
   const [width, setWidth] = useState(0);
   const [data, setData] = useState(null);
@@ -97,8 +97,7 @@ const QuotaPie = ({ seller }) => {
                 stroke="none"
                 data={data}
                 innerRadius={(width / 2) * 0.7}
-                outerRadius={width / 2}
-              >
+                outerRadius={width / 2}>
                 {data &&
                   data.map((item, index) => (
                     <Cell key={`cell-${index}`} fill={item.color} />

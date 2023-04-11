@@ -1,33 +1,37 @@
 import styled from "styled-components";
 
-import Ref from "../../../public/Ref.svg";
-import Capstone from "../../../public/Capstone.svg";
+import Logo from "../../../public/logo.svg";
+import Image from "next/image";
+interface HeaderProps {
+  title: string;
+  view: number;
+}
 
-const Header = ({ title, view }) => {
-  const fontSize = view > 4 ? "3.6vh" : "4.7vh";
-  const height = view === 4 ? "12.5vh" : "8.2vh";
+interface Props {
+  fontSize: string;
+  height: string;
+}
+const Header = ({ title, view }: HeaderProps) => {
+  const fontSize = view > 1 ? "3.6vh" : "4.7vh";
+  const height = "8vh";
 
   return (
     <StyledHeader fontSize={fontSize} height={height}>
       <div className="headerContainer">
         <div>{title}</div>
         <div>
-          {view === 4 ? (
-            <Capstone className="capstone" />
-          ) : (
-            <Ref className="ref" />
-          )}
+          <Image src={Logo} alt="nrm" />
         </div>
         <div></div>
       </div>
       {view === 1 && (
         <div className="ordersTitles">
           <div className="container">
-            <div>ordernummer</div>
-            <div>orderstatus</div>
-            <div>kundnamn</div>
-            <div>orderdatum</div>
-            <div>ordervärde</div>
+            <div>Date</div>
+            <div>Country</div>
+            <div>Municipality</div>
+            <div>School</div>
+            <div>Teacher</div>
           </div>
         </div>
       )}
@@ -35,7 +39,7 @@ const Header = ({ title, view }) => {
   );
 };
 
-const StyledHeader = styled.div`
+const StyledHeader = styled.div<Props>`
   height: 10vh;
   position: relative;
 
@@ -56,17 +60,17 @@ const StyledHeader = styled.div`
         height: ${(props) => props.height};
       }
 
-      .ref {
-        width: 13vw;
-        height: 8.2vh;
-        margin-top: 2vh;
-      }
+      // .ref {
+      //   width: 13vw;
+      //   height: 8.2vh;
+      //   margin-top: 2vh;
+      // }
 
-      .capstone {
-        width: 13vw;
-        height: 12.5vh;
-        margin-top: 4vh;
-      }
+      // .capstone {
+      //   width: 13vw;
+      //   height: 12.5vh;
+      //   margin-top: 4vh;
+      // }
     }
   }
 
@@ -74,16 +78,12 @@ const StyledHeader = styled.div`
     width: 100%;
     padding: 0 calc(4vh + 100px);
     position: absolute;
-    bottom: -6.5vh;
-
+    bottom: -7.5vh;
+    font-size: 20px;
     .container {
       padding: 0 3%;
       display: grid;
-      grid-template-columns: 15% 15% auto 20% 20%;
-    }
-
-    div {
-      font-size: 1.4vh;
+      grid-template-columns: 15% 15% auto 30% 20%;
     }
   }
 `;

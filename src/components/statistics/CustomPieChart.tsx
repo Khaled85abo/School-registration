@@ -2,14 +2,14 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 
-const PieChartCard2 = ({ orders, title }) => {
+const CustomPieChart = ({ orders, title }: { orders: any; title: string }) => {
   const [stats, setStats] = useState([]);
   const [width, setWidth] = useState(0);
 
   const groupOrders = () => {
     // Combine the orders by "OrdLevAdr1" and sum the value of "OhOrdSumInklMoms".
-    var groups = [];
-    orders.reduce(function (res, value) {
+    var groups: any[] = [];
+    orders.reduce(function (res: any, value: any) {
       if (!res[value.OrdLevAdr1]) {
         res[value.OrdLevAdr1] = {
           OrdLevAdr1: value.OrdLevAdr1,
@@ -104,7 +104,7 @@ const PieChartCard2 = ({ orders, title }) => {
     { start: "#B8CAC2", end: "#E8FBEB" },
   ];
   return (
-    <StyledPieChartCard2 width={width}>
+    <StyledCustomPieChart width={width}>
       <div className="chartContainer">
         <div className="chartWrapper">
           <div className="oneHundred">100%</div>
@@ -137,8 +137,7 @@ const PieChartCard2 = ({ orders, title }) => {
                 stroke="none"
                 data={stats}
                 innerRadius={(width / 2) * 0.7}
-                outerRadius={width / 2}
-              >
+                outerRadius={width / 2}>
                 {stats.map((item, index) => (
                   <Cell
                     key={`cell-${index}`}
@@ -167,11 +166,11 @@ const PieChartCard2 = ({ orders, title }) => {
             );
           })}
       </div>
-    </StyledPieChartCard2>
+    </StyledCustomPieChart>
   );
 };
 
-const StyledPieChartCard2 = styled.div`
+const StyledCustomPieChart = styled.div`
   /* height: 100%; */
   width: 100%;
   display: grid;
@@ -254,4 +253,4 @@ const StyledPieChartCard2 = styled.div`
   }
 `;
 
-export default PieChartCard2;
+export default CustomPieChart;

@@ -4,17 +4,15 @@ import { useState, useEffect } from "react";
 // Fake data
 import { fakeData } from "../../public/data";
 // Components
-import Header from "@/components/Header/Header";
 
 // Blocks
-import Orders from "@/components/blocks/Orders/Orders";
-import Sales from "@/components/blocks/Sales/Sales";
-import SalesRef from "@/components/blocks/SalesRef/SalesRef";
-import SalesCapstone from "@/components/blocks/SalesCapstone/SalesCapstone";
-import Budget from "@/components/blocks/Budget/Budget";
+import Header from "@/components/statistics/Header";
+import VisitsList from "@/components/statistics/blocks/VisitsList";
+import Status from "@/components/statistics/blocks/Status";
+
 const Statistics = () => {
-  const [view, setView] = useState(1);
-  const [numberOfViews, setNumberOfViews] = useState(4);
+  const [view, setView] = useState(2);
+  const [numberOfViews, setNumberOfViews] = useState(2);
   // Change view time here
   // const changeViewTime = 5000;
   const changeViewTime = 3000000;
@@ -60,19 +58,10 @@ const Statistics = () => {
   var title;
   switch (view) {
     case 1:
-      title = "Orders";
-      break;
-    case 2:
-      title = "Sales";
-      break;
-    case 3:
-      title = "Sales REF";
-      break;
-    case 4:
-      title = "Sales Capstone";
+      title = "Visits";
       break;
     default:
-      title = data?.sellersMonthlySales[view - 5]?.name;
+      title = "Statistics";
   }
 
   return (
@@ -81,15 +70,12 @@ const Statistics = () => {
       <div className="viewContainer">
         {data ? (
           <>
-            {view === 1 && <Orders data={data.ref} />}
-            {view === 2 && <Sales view={view} data={data.allOrders} />}
-            {view === 3 && <SalesRef view={view} data={data.ref} />}
-            {view === 4 && <SalesCapstone view={view} data={data.capstone} />}
-            {view > 4 && (
-              <Budget
+            {view === 1 && <VisitsList data={data.ref} />}
+            {view === 2 && (
+              <Status
                 view={view}
                 data={data.allOrders}
-                seller={data.sellersMonthlySales[view - 5]}
+                seller={data.sellersMonthlySales[view - 1]}
               />
             )}
           </>
@@ -106,9 +92,18 @@ const Statistics = () => {
 export default Statistics;
 
 const StyledIndex = styled.div`
+  background: linear-gradient(109.8deg, #eceef2 0%, #f6f9f8 100%);
+  font-family: "Arimo", sans-serif;
   .viewContainer {
-    height: 90vh;
+    // height: 90vh;
     padding: 4vh;
+  }
+  ul {
+    list-style: none;
+  }
+
+  a {
+    text-decoration: none;
   }
 `;
 const LoadingContainer = styled.div`

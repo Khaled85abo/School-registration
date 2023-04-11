@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { FiHeart, FiAward, FiLoader, FiLogOut } from "react-icons/fi";
 
-export function getAmount(num) {
+export function getAmount(num: number) {
   if (num > 999999) {
     return parseFloat((num / 1000000).toFixed(2)).toString() + "M";
   }
@@ -11,7 +11,15 @@ export function getAmount(num) {
   return "0";
 }
 
-const SaleStats = ({ data, view }) => {
+interface Props {
+  view: number;
+}
+interface VisitsStatusProps {
+  data: any;
+  view: number;
+}
+
+const VisitsCount = ({ data, view }: VisitsStatusProps) => {
   return (
     <StyledSaleStats view={view}>
       <div className="inverted_radius"></div>
@@ -50,8 +58,7 @@ const SaleStats = ({ data, view }) => {
                 view={view}
                 style={{
                   color: color,
-                }}
-              >
+                }}>
                 {getAmount(amount)}
               </AmountStyle>
             </div>
@@ -61,7 +68,7 @@ const SaleStats = ({ data, view }) => {
   );
 };
 
-const StyledSaleStats = styled.div`
+const StyledSaleStats = styled.div<Props>`
   display: inline-flex;
   justify-content: space-around;
   align-items: center;
@@ -139,14 +146,14 @@ const StyledSaleStats = styled.div`
     border-radius: 100%;
     box-shadow: 0px 0px 0px 0.0727vw #fff;
     ${(props) =>
-      props.view > 4 &&
+      props.view > 1 &&
       `
     right: 6vw;
     `}
   }
 `;
 
-const AmountStyle = styled.div`
+const AmountStyle = styled.div<Props>`
   font-family: "GraphikWide", sans-serif;
   padding-left: ${(props) =>
     props.view < 4 || props.view === 4 ? " 3.5vw" : "0vw"};
@@ -154,4 +161,4 @@ const AmountStyle = styled.div`
   font-size: 2.135vw;
 `;
 
-export default SaleStats;
+export default VisitsCount;

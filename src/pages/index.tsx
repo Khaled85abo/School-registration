@@ -3,14 +3,14 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Inter } from "next/font/google";
-import AddressForm from "@/components/AddressForm";
-import TeacherForm from "@/components/TeacherForm";
-import ClassForm from "@/components/ClassForm";
-import ChooseLocation from "@/components/ChooseLocation";
 import { useMultistepForm } from "@/hooks/useMulitstepForm";
 import backSvg from "@/assets/svg/back.svg";
 import nextSvg from "@/assets/svg/next.svg";
-import AccountForm from "@/components/AccountForm";
+import ChooseLocation from "@/components/forms/ChooseLocation";
+import AddressForm from "@/components/forms/AddressForm";
+import TeacherForm from "@/components/forms/TeacherForm";
+import ClassForm from "@/components/forms/ClassForm";
+import AccountForm from "@/components/forms/AccountForm";
 
 export const CLASSES = {
   kinderGarden: "Kinder Garden",

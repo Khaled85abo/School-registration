@@ -1,7 +1,7 @@
 import { Wrapper } from "./StyledComponents";
 import Image from "next/image";
-import sweden from "../assets/svg/sweden.svg";
-import world from "../assets/svg/world.svg";
+import sweden from "../../assets/svg/sweden.svg";
+import world from "../../assets/svg/world.svg";
 import styled from "styled-components";
 import municipalities from "@/assets/JSON/municipalities";
 import countries from "@/assets/JSON/countries";

@@ -1,8 +1,8 @@
 "use client";
 import Image from "next/image";
 import styled from "styled-components";
-import sweden from "../assets/svg/sweden.svg";
-import world from "../assets/svg/world.svg";
+import sweden from "../../assets/svg/sweden.svg";
+import world from "../../assets/svg/world.svg";
 import { useEffect, useState } from "react";
 import { useWindowSize } from "@/hooks/windowWidth";
 

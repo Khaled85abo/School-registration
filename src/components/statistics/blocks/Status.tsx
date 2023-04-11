@@ -1,12 +1,16 @@
 import styled from "styled-components";
 
 // Components
-import SaleStats from "@/components/SaleStats/SaleStats";
-import PieChartCard2 from "@/components/PieChartCard2/PieChartCard2";
-import SellerBarChart from "@/components/BarChart/SellerBarChart";
-import QuotaPie from "@/components/PieChartCard2/QuotaPie";
-
-const Budget = ({ view, data, seller }) => {
+import VisitsBarChart from "@/components/statistics/VisitsBarChart";
+import CustomPieChart from "@/components/statistics/CustomPieChart";
+import QuotaPie from "@/components/statistics/QuotaPie";
+import VisitsCount from "@/components/statistics/VisitsCount";
+interface StatusProps {
+  view: number;
+  data: any;
+  seller: any;
+}
+const Status = ({ view, data, seller }: StatusProps) => {
   const saleStatsData = [
     {
       title: "This year",
@@ -33,21 +37,21 @@ const Budget = ({ view, data, seller }) => {
   return (
     <StyledBudget>
       <div className="leftContainer">
-        <SaleStats className="stats" data={saleStatsData} view={view} />
-        <SellerBarChart data={seller} view={view} />
+        <VisitsCount data={saleStatsData} view={view} />
+        <VisitsBarChart data={seller} view={view} />
       </div>
 
       <div className="wrapper">
         <div className="pieChartContainer">
-          <div className="title">In division</div>
+          <div className="title">This Year</div>
           <div className="pieChartCardContainer">
-            <PieChartCard2 title="Order Status" orders={data.orders} />
-            <PieChartCard2 title="Brands" orders={data.orders} />
+            <CustomPieChart title="Local/international" orders={data.orders} />
+            <CustomPieChart title="Grades" orders={data.orders} />
           </div>
         </div>
 
         <div className="pieChartContainer budget">
-          <div className="title">Budget quota</div>
+          <div className="title">Payed Visits</div>
           <div className="pieChartCardContainer">
             <QuotaPie seller={seller.sales} />
           </div>
@@ -119,4 +123,4 @@ const StyledBudget = styled.div`
   }
 `;
 
-export default Budget;
+export default Status;

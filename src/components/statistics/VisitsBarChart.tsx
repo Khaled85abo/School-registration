@@ -12,14 +12,20 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
-import { kFormatter } from "./amounFormatter";
+import { kFormatter } from "@/utils/amounFormatter";
 
-const SellerBarChart = ({ data, view }) => {
+interface Props {
+  padding: string;
+  background: string;
+  salesColor: string;
+  budgetColor: string;
+}
+const SellerBarChart = ({ data, view }: { data: any; view: number }) => {
   const [customBarSize, setCustomBarSize] = useState(window.innerWidth / 55);
   const [customRadius, setCustomRadius] = useState(window.innerWidth / 200);
   const [customYwidth, setCustomYwidth] = useState(window.innerWidth / 30);
 
-  const modifiedData = data?.sales.map((el) => {
+  const modifiedData = data?.sales.map((el: any) => {
     const result = el.budget - el.sales;
     const shortenBy = el.budget > 1000000 ? 1000 : 1;
     return {
@@ -30,12 +36,9 @@ const SellerBarChart = ({ data, view }) => {
   });
   console.log("modifiedData", modifiedData);
   const padding = view === 3 || view === 4 ? "3%" : "5%";
-  const background =
-    view > 4
-      ? "linear-gradient(102.01deg, #C8D3DC 0%, #EFEFEF 100%)"
-      : "linear-gradient(102.01deg, rgba(255, 255, 255, 0.8) 0%, rgba(245, 246, 247, 0.8) 100%)";
-  const salesColor = view > 4 ? "#808287" : "#A4AFB7";
-  const budgetColor = view > 4 ? "#A4AFB7" : "#C1A470";
+  const background = "linear-gradient(102.01deg, #C8D3DC 0%, #EFEFEF 100%)";
+  const salesColor = "#808287";
+  const budgetColor = "#A4AFB7";
 
   function resizingFunc() {
     setCustomBarSize(window.innerWidth / 55);
@@ -56,8 +59,7 @@ const SellerBarChart = ({ data, view }) => {
       padding={padding}
       background={background}
       salesColor={salesColor}
-      budgetColor={budgetColor}
-    >
+      budgetColor={budgetColor}>
       <div className="title">Last 12 month</div>
       <div className="chartWrapper">
         <ResponsiveContainer>
@@ -68,8 +70,7 @@ const SellerBarChart = ({ data, view }) => {
               right: 0,
               bottom: 0,
               left: 0,
-            }}
-          >
+            }}>
             <XAxis
               dy={15}
               height={60}
@@ -115,22 +116,22 @@ const SellerBarChart = ({ data, view }) => {
       <div className="dots">
         <div className="item">
           <div className="dot budget"></div>
-          <div className="text">Budget</div>
+          <div className="text">local</div>
         </div>
         <div className="item">
           <div className="dot sales"></div>
-          <div className="text">Sales</div>
+          <div className="text">international</div>
         </div>
         <div className="item">
           <div className="dot prevYear"></div>
-          <div className="text">Previous year sales</div>
+          <div className="text">Previous year visits</div>
         </div>
       </div>
     </StyledBarChart>
   );
 };
 
-const StyledBarChart = styled.div`
+const StyledBarChart = styled.div<Props>`
   background: ${(props) =>
     props.background ||
     "linear-gradient(102.01deg, rgba(255, 255, 255, 0.8) 0%, rgba(245, 246, 247, 0.8) 100%)"};
