@@ -4,13 +4,16 @@ export const Wrapper = styled.div`
   background: rgba(255, 255, 255, 0.8);
   padding: 2rem;
   border-radius: 15px;
+  font-size: 18px;
+  label {
+    font-weight: bold;
+  }
   h2 {
     text-align: center;
     margin: 0;
     margin-bottom: 2rem;
   }
   .form-wrapper {
-    font-size: 18px;
     min-width: 400px;
     // display: grid;
     // gap: 1rem 0.5rem;
@@ -27,19 +30,15 @@ export const Wrapper = styled.div`
       font-size: 18px;
       border-radius: 8px;
     }
-    label {
-      font-weight: bold;
-    }
-    .flex {
-      display: flex;
-      gap: 0.5rem;
-    }
+
     @media (max-width: 500px) {
-      font-size: 16px;
       min-width: 250px;
       input {
         font-size: 15px;
       }
     }
+  }
+  @media (max-width: 500px) {
+    font-size: 16px;
   }
 `;

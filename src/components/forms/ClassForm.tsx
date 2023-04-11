@@ -2,7 +2,7 @@ import { Class, CLASSES } from "@/pages";
 import styled from "styled-components";
 import { Wrapper } from "./StyledComponents";
 type ClassData = {
-  classGrade: Class | null;
+  grade: Class;
   studentsCount: number;
   teachersCount: number;
   havePayedTour: boolean;
@@ -17,7 +17,7 @@ const ClassForm = ({
   teachersCount,
   havePayedTour,
   updateFields,
-  classGrade,
+  grade,
   school,
 }: ClassFormProps) => {
   return (
@@ -46,11 +46,15 @@ const ClassForm = ({
             required
           /> */}
           <select
+            value={grade}
             onChange={(e) => {
-              updateFields({ classGrade: e.target.value });
+              updateFields({ grade: e.target.value });
             }}>
+            <option value="">--Please choose an option--</option>
             {Object.keys(CLASSES).map((key, index) => (
-              <option key={index}>{CLASSES[key]}</option>
+              <option key={index} value={CLASSES[key]}>
+                {CLASSES[key]}
+              </option>
             ))}
           </select>
           <div className="">
