@@ -7,10 +7,11 @@ import { fakeData } from "../../public/data";
 
 // Blocks
 import Header from "@/components/statistics/Header";
+import VisitsList from "@/components/statistics/blocks/VisitsList";
 import Status from "@/components/statistics/blocks/Status";
 
-const Statistics = () => {
-  const changeViewTime = 3000000;
+const Visits = () => {
+  const refetchVisits = 3000000;
 
   const [data, setData] = useState<any>(null);
   const getVisits = async () => {
@@ -33,22 +34,16 @@ const Statistics = () => {
     getVisits();
     const interval = setInterval(() => {
       getVisits();
-    }, changeViewTime);
+    }, refetchVisits);
     return () => clearInterval(interval);
   }, []);
 
   return (
     <StyledIndex>
-      <Header title="Statistics" />
+      <Header title="Visits" />
       <div className="viewContainer">
         {data ? (
-          <>
-            <Status
-              view={4}
-              data={data.allOrders}
-              seller={data.sellersMonthlySales[5 - 1]}
-            />
-          </>
+          <VisitsList data={data.ref} />
         ) : (
           <LoadingContainer>
             <h3>Loading...</h3>
@@ -59,7 +54,7 @@ const Statistics = () => {
   );
 };
 
-export default Statistics;
+export default Visits;
 
 const StyledIndex = styled.div`
   background: linear-gradient(109.8deg, #eceef2 0%, #f6f9f8 100%);

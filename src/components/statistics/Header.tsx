@@ -4,15 +4,14 @@ import Logo from "../../../public/logo.svg";
 import Image from "next/image";
 interface HeaderProps {
   title: string;
-  view: number;
 }
 
 interface Props {
   fontSize: string;
   height: string;
 }
-const Header = ({ title, view }: HeaderProps) => {
-  const fontSize = view > 1 ? "3.6vh" : "4.7vh";
+const Header = ({ title }: HeaderProps) => {
+  const fontSize = title === "Visits" ? "3.6vh" : "4.7vh";
   const height = "8vh";
 
   return (
@@ -24,7 +23,7 @@ const Header = ({ title, view }: HeaderProps) => {
         </div>
         <div></div>
       </div>
-      {view === 1 && (
+      {title === "Visits" && (
         <div className="ordersTitles">
           <div className="container">
             <div>Date</div>

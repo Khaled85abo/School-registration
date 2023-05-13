@@ -10,7 +10,7 @@ import ChooseLocation from "@/components/forms/ChooseLocation";
 import AddressForm from "@/components/forms/AddressForm";
 import TeacherForm from "@/components/forms/TeacherForm";
 import ClassForm from "@/components/forms/ClassForm";
-import AccountForm from "@/components/forms/AccountForm";
+import LoginForm from "@/components/forms/LoginForm";
 
 export const CLASSES = {
   kinderGarden: "Kinder Garden",
@@ -155,7 +155,7 @@ export default function Home() {
   if (showLogin) {
     return (
       <AppWrapper className="bg-img">
-        <AccountForm />
+        <LoginForm />
       </AppWrapper>
     );
   }

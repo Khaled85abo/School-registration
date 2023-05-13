@@ -1,13 +1,13 @@
 import { Wrapper } from "./StyledComponents";
-type AccountData = {
+type LoginData = {
   email: string;
   password: string;
 };
 
-type AccountFormProps = AccountData & {
-  updateFields: (fields: Partial<AccountData>) => void;
+type LoginFormProps = LoginData & {
+  updateFields: (fields: Partial<LoginData>) => void;
 };
-const AccountForm = () => {
+const LoginForm = () => {
   return (
     <Wrapper>
       <h2>Login</h2>
@@ -23,4 +23,4 @@ const AccountForm = () => {
   );
 };
 
-export default AccountForm;
+export default LoginForm;

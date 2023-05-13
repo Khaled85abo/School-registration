@@ -1,4 +1,4 @@
-import AccountForm from "@/components/AccountForm";
+import AccountForm from "@/components/forms/LoginForm";
 
 const Login = () => {
   const all = `0114 Upplands Väsby

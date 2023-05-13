@@ -2,11 +2,7 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { getRelativeDateIntl } from "@/utils/relativeTime";
 
-const Visits = ({ data }: { data: any }) => {
-  const [totTime, setTotTime] = useState(0);
-  const [waitPercentage1, setWaitPercentage1] = useState(0);
-  const [waitPercentage2, setWaitPercentage2] = useState(0);
-
+const VisitsList = ({ data }: { data: any }) => {
   return (
     <StyledOrders className="ordersBlock">
       <div className="ordersContainer">
@@ -144,4 +140,4 @@ const StyledOrders = styled.div`
   }
 `;
 
-export default Visits;
+export default VisitsList;
