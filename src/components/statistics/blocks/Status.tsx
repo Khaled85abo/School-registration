@@ -6,11 +6,10 @@ import CustomPieChart from "@/components/statistics/CustomPieChart";
 import QuotaPie from "@/components/statistics/QuotaPie";
 import VisitsCount from "@/components/statistics/VisitsCount";
 interface StatusProps {
-  view: number;
   data: any;
   seller: any;
 }
-const Status = ({ view, data, seller }: StatusProps) => {
+const Status = ({ data, seller }: StatusProps) => {
   const saleStatsData = [
     {
       title: "This year",
@@ -37,8 +36,8 @@ const Status = ({ view, data, seller }: StatusProps) => {
   return (
     <StyledBudget>
       <div className="leftContainer">
-        <VisitsCount data={saleStatsData} view={view} />
-        <VisitsBarChart data={seller} view={view} />
+        <VisitsCount data={saleStatsData} />
+        <VisitsBarChart data={seller} />
       </div>
 
       <div className="wrapper">

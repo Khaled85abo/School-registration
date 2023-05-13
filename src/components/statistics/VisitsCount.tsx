@@ -11,17 +11,13 @@ export function getAmount(num: number) {
   return "0";
 }
 
-interface Props {
-  view: number;
-}
 interface VisitsStatusProps {
   data: any;
-  view: number;
 }
 
-const VisitsCount = ({ data, view }: VisitsStatusProps) => {
+const VisitsCount = ({ data }: VisitsStatusProps) => {
   return (
-    <StyledSaleStats view={view}>
+    <StyledSaleStats>
       <div className="inverted_radius"></div>
       {Array.isArray(data) &&
         data.length > 0 &&
@@ -55,7 +51,6 @@ const VisitsCount = ({ data, view }: VisitsStatusProps) => {
               </div>
 
               <AmountStyle
-                view={view}
                 style={{
                   color: color,
                 }}>
@@ -68,7 +63,7 @@ const VisitsCount = ({ data, view }: VisitsStatusProps) => {
   );
 };
 
-const StyledSaleStats = styled.div<Props>`
+const StyledSaleStats = styled.div`
   display: inline-flex;
   justify-content: space-around;
   align-items: center;
@@ -145,19 +140,14 @@ const StyledSaleStats = styled.div<Props>`
     background-color: #f0f3f5;
     border-radius: 100%;
     box-shadow: 0px 0px 0px 0.0727vw #fff;
-    ${(props) =>
-      props.view > 1 &&
-      `
+
     right: 6vw;
-    `}
   }
 `;
 
-const AmountStyle = styled.div<Props>`
+const AmountStyle = styled.div`
   font-family: "GraphikWide", sans-serif;
-  padding-left: ${(props) =>
-    props.view < 4 || props.view === 4 ? " 3.5vw" : "0vw"};
-  text-align: ${(props) => props.view > 4 && "center"};
+  padding-left: 3.5vw;
   font-size: 2.135vw;
 `;
 

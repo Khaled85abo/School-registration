@@ -44,9 +44,8 @@ const Statistics = () => {
         {data ? (
           <>
             <Status
-              view={4}
               data={data.allOrders}
-              seller={data.sellersMonthlySales[5 - 1]}
+              seller={data.sellersMonthlySales[4]}
             />
           </>
         ) : (

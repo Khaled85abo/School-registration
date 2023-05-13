@@ -15,12 +15,11 @@ import {
 import { kFormatter } from "@/utils/amounFormatter";
 
 interface Props {
-  padding: string;
   background: string;
   salesColor: string;
   budgetColor: string;
 }
-const SellerBarChart = ({ data, view }: { data: any; view: number }) => {
+const SellerBarChart = ({ data }: { data: any }) => {
   const [customBarSize, setCustomBarSize] = useState(window.innerWidth / 55);
   const [customRadius, setCustomRadius] = useState(window.innerWidth / 200);
   const [customYwidth, setCustomYwidth] = useState(window.innerWidth / 30);
@@ -35,7 +34,7 @@ const SellerBarChart = ({ data, view }: { data: any; view: number }) => {
     };
   });
   console.log("modifiedData", modifiedData);
-  const padding = view === 3 || view === 4 ? "3%" : "5%";
+  const padding = "3%";
   const background = "linear-gradient(102.01deg, #C8D3DC 0%, #EFEFEF 100%)";
   const salesColor = "#808287";
   const budgetColor = "#A4AFB7";
@@ -56,7 +55,6 @@ const SellerBarChart = ({ data, view }: { data: any; view: number }) => {
 
   return (
     <StyledBarChart
-      padding={padding}
       background={background}
       salesColor={salesColor}
       budgetColor={budgetColor}>
@@ -140,7 +138,7 @@ const StyledBarChart = styled.div<Props>`
   height: 100%;
   border: 1px solid rgba(255, 255, 255, 0.52);
   border-radius: 1.454vw;
-  padding: ${(props) => props.padding || "5%"};
+  padding: 3%;
   display: flex;
   flex-direction: column;
   gap: 2.8vh;
