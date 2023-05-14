@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 
 // Fake data
+import { fakeData } from "../assets/lists/fakeData";
 // Components
 
 // Blocks
@@ -14,13 +15,14 @@ const Statistics = () => {
   const [data, setData] = useState<any>(null);
   const getVisits = async () => {
     try {
-      const res = await fetch("api/statistics");
+      const res = await fetch("api/statistic");
       const resData = await res.json();
 
       console.log("data from backend: ", resData);
       setData(resData);
     } catch (err) {
       console.log("Server is down!", err);
+      setData(fakeData);
     }
   };
 
