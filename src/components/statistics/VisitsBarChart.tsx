@@ -4,41 +4,35 @@ import {
   ResponsiveContainer,
   ComposedChart,
   Line,
-  Area,
   Bar,
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
-  Legend,
 } from "recharts";
 import { kFormatter } from "@/utils/amounFormatter";
 
 interface Props {
-  padding: string;
   background: string;
-  salesColor: string;
-  budgetColor: string;
+  internationalVisitsColor: string;
+  totalVisitsColor: string;
 }
-const SellerBarChart = ({ data, view }: { data: any; view: number }) => {
+const SellerBarChart = ({ data }: { data: any }) => {
   const [customBarSize, setCustomBarSize] = useState(window.innerWidth / 55);
   const [customRadius, setCustomRadius] = useState(window.innerWidth / 200);
   const [customYwidth, setCustomYwidth] = useState(window.innerWidth / 30);
 
-  const modifiedData = data?.sales.map((el: any) => {
-    const result = el.budget - el.sales;
-    const shortenBy = el.budget > 1000000 ? 1000 : 1;
+  const modifiedData = data.map((el: any) => {
+    const result = el.totalVisits - el.internationalVisits;
     return {
       ...el,
-      budget: result < 0 ? 0 : result,
-      sales: el.sales,
+      totalVisits: result < 0 ? 0 : result,
+      internationalVisits: el.internationalVisits,
     };
   });
   console.log("modifiedData", modifiedData);
-  const padding = view === 3 || view === 4 ? "3%" : "5%";
   const background = "linear-gradient(102.01deg, #C8D3DC 0%, #EFEFEF 100%)";
-  const salesColor = "#808287";
-  const budgetColor = "#A4AFB7";
+  const internationalVisitsColor = "#808287";
+  const totalVisitsColor = "#A4AFB7";
 
   function resizingFunc() {
     setCustomBarSize(window.innerWidth / 55);
@@ -56,10 +50,9 @@ const SellerBarChart = ({ data, view }: { data: any; view: number }) => {
 
   return (
     <StyledBarChart
-      padding={padding}
       background={background}
-      salesColor={salesColor}
-      budgetColor={budgetColor}>
+      internationalVisitsColor={internationalVisitsColor}
+      totalVisitsColor={totalVisitsColor}>
       <div className="title">Last 12 month</div>
       <div className="chartWrapper">
         <ResponsiveContainer>
@@ -87,12 +80,12 @@ const SellerBarChart = ({ data, view }: { data: any; view: number }) => {
 
             <Bar
               barSize={customBarSize}
-              dataKey="sales"
+              dataKey="internationalVisits"
               stackId="a"
               fill="#808287"
             />
             <Bar
-              dataKey="budget"
+              dataKey="totalVisits"
               stackId="a"
               fill="#A4AFB7"
               barSize={customBarSize}
@@ -106,7 +99,7 @@ const SellerBarChart = ({ data, view }: { data: any; view: number }) => {
             />
             <Line
               type="monotone"
-              dataKey="prevYearSales"
+              dataKey="prevYearVisits"
               stroke="#E0BB75"
               strokeWidth={"0.17vh"}
             />
@@ -140,7 +133,7 @@ const StyledBarChart = styled.div<Props>`
   height: 100%;
   border: 1px solid rgba(255, 255, 255, 0.52);
   border-radius: 1.454vw;
-  padding: ${(props) => props.padding || "5%"};
+  padding: 3%;
   display: flex;
   flex-direction: column;
   gap: 2.8vh;
@@ -188,11 +181,12 @@ const StyledBarChart = styled.div<Props>`
       }
 
       .sales {
-        background-color: ${(props) => props.salesColor || "#A4AFB7"};
+        background-color: ${(props) =>
+          props.internationalVisitsColor || "#A4AFB7"};
       }
 
       .budget {
-        background-color: ${(props) => props.budgetColor || "#C1A470"};
+        background-color: ${(props) => props.totalVisitsColor || "#C1A470"};
       }
 
       .average {

@@ -2,34 +2,35 @@ import styled from "styled-components";
 
 // Components
 import VisitsBarChart from "@/components/statistics/VisitsBarChart";
-import CustomPieChart from "@/components/statistics/CustomPieChart";
+import PieChart from "@/components/statistics/CitiesPieChart";
 import QuotaPie from "@/components/statistics/QuotaPie";
 import VisitsCount from "@/components/statistics/VisitsCount";
+import GradesPieChart from "../GradesPieChart";
+import CitiesPieChart from "@/components/statistics/CitiesPieChart";
 interface StatusProps {
-  view: number;
   data: any;
-  seller: any;
+  barChart: any;
 }
-const Status = ({ view, data, seller }: StatusProps) => {
-  const saleStatsData = [
+const Status = ({ data, barChart }: StatusProps) => {
+  const visitsCounts = [
     {
       title: "This year",
-      amount: data.thisYearSum,
+      amount: data.thisYearVisitsSum,
       color: "#A4BDB2",
     },
     {
       title: "This month",
-      amount: data.thisMonthSum,
+      amount: data.thisMonthVisitsSum,
       color: "#DDABAD",
     },
     {
-      title: "This week",
-      amount: data.thisWeekSum,
+      title: "Last year",
+      amount: data.lastYearVisitsSum,
       color: "#C1A470",
     },
     {
       title: "This month last year",
-      amount: data.thisMonthLastYearSum,
+      amount: data.thisMonthLastYearVisitsSum,
       color: "#899AA6",
     },
   ];
@@ -37,23 +38,25 @@ const Status = ({ view, data, seller }: StatusProps) => {
   return (
     <StyledBudget>
       <div className="leftContainer">
-        <VisitsCount data={saleStatsData} view={view} />
-        <VisitsBarChart data={seller} view={view} />
+        <VisitsCount data={visitsCounts} />
+        <VisitsBarChart data={barChart} />
       </div>
 
       <div className="wrapper">
         <div className="pieChartContainer">
           <div className="title">This Year</div>
           <div className="pieChartCardContainer">
-            <CustomPieChart title="Local/international" orders={data.orders} />
-            <CustomPieChart title="Grades" orders={data.orders} />
+            {/* <PieChart title="Local/international" orders={data.orders} /> */}
+            <GradesPieChart title="Grades" visits={data.organizedByYear} />
+            <CitiesPieChart title="Cities" visits={data.organizedByYear} />
+            {/* <PieChart title="Grades" orders={data.orders} /> */}
           </div>
         </div>
 
         <div className="pieChartContainer budget">
           <div className="title">Payed Visits</div>
           <div className="pieChartCardContainer">
-            <QuotaPie seller={seller.sales} />
+            <QuotaPie visits={data.organizedByYear} />
           </div>
         </div>
       </div>

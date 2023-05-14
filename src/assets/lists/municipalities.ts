@@ -1,4 +1,4 @@
-export default [
+const municipalities = [
   {
     name: "Ale",
     code: "1440",
@@ -1160,3 +1160,5 @@ export default [
     code: "2518",
   },
 ];
+
+export default municipalities;

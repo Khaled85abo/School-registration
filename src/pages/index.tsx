@@ -10,7 +10,7 @@ import ChooseLocation from "@/components/forms/ChooseLocation";
 import AddressForm from "@/components/forms/AddressForm";
 import TeacherForm from "@/components/forms/TeacherForm";
 import ClassForm from "@/components/forms/ClassForm";
-import AccountForm from "@/components/forms/AccountForm";
+import LoginForm from "@/components/forms/LoginForm";
 
 export const CLASSES = {
   kinderGarden: "Kinder Garden",
@@ -23,32 +23,11 @@ export const CLASSES = {
 type ObjectType<T> = T[keyof T];
 export type Class = ObjectType<typeof CLASSES>;
 
-export type School = {
-  name: string;
-  email: string;
-  phone: string;
-};
-
-export type Teacher = {
-  name: string;
-  email: string;
-  phone: string;
-};
-
-export type Visit = {
-  local: boolean | null;
-  country: string;
-  municipality?: string;
-  classGrade: string;
-  studentsCount: number;
-  teachersCount: number;
-  havePayedTour: boolean;
-};
-export type FormData = {
+export type SingleVisit = {
   country: string;
   municipality?: string;
   school: string;
-  grade: Class;
+  grade: string;
   studentsCount: number;
   teachersCount: number;
   havePayedTour: boolean;
@@ -56,8 +35,14 @@ export type FormData = {
   phone?: string;
   email?: string;
   museumId: number | null;
+  testCreateAt?: Date | string;
 };
-const INITIAL_DATA: FormData = {
+export type DatabaseSingleVisit = SingleVisit & {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+};
+const INITIAL_DATA: SingleVisit = {
   country: "",
   school: "Test school",
   grade: CLASSES.kinderGarden,
@@ -76,7 +61,7 @@ export default function Home() {
   const [data, setData] = useState(INITIAL_DATA);
   const [showLogin, setShowLogin] = useState(false);
   const [disabled, setDisabled] = useState(false);
-  function updateFields(fields: Partial<FormData>) {
+  function updateFields(fields: Partial<SingleVisit>) {
     setData((prev) => {
       return { ...prev, ...fields };
     });
@@ -92,26 +77,26 @@ export default function Home() {
     isFirstStep,
     isLastStep,
   } = useMultistepForm([
-    <ChooseLocation country={data.country} updateFields={updateFields} />,
-    // data.local === true ? (
-    //   <MunicipalityForm />
-    // ) : data.local === false ? (
-    //   <CountryForm country={data.country} updateFields={updateFields} />
-    // ) : (
-    //   <ChooseLocation local={data.local} updateFields={updateFields} />
-    // ),
+    <ChooseLocation
+      key={1}
+      country={data.country}
+      updateFields={updateFields}
+    />,
     <AddressForm
+      key={2}
       country={data.country}
       municipality={data.municipality}
       updateFields={updateFields}
     />,
     <TeacherForm
+      key={3}
       teacher={data.teacher}
       phone={data.phone}
       email={data.email}
       updateFields={updateFields}
     />,
     <ClassForm
+      key={4}
       updateFields={updateFields}
       school={data.school}
       studentsCount={data.studentsCount}
@@ -155,7 +140,7 @@ export default function Home() {
   if (showLogin) {
     return (
       <AppWrapper className="bg-img">
-        <AccountForm />
+        <LoginForm />
       </AppWrapper>
     );
   }

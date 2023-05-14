@@ -17,7 +17,7 @@ const TeacherForm = ({
 }: TeacherFormProps) => {
   return (
     <Wrapper>
-      <h2>Teacher's Details</h2>
+      <h2>Teacher&apos;s Details</h2>
       <div className="form-wrapper">
         <label>First Name*</label>
         <input

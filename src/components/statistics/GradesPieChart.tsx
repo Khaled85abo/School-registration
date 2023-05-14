@@ -3,70 +3,63 @@ import { useState, useEffect } from "react";
 import { ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import { SingleVisit } from "@/pages";
 
-export const months = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-const getPercentage = (sales: number, budget: number) => {
-  return (sales * 100) / budget;
+type Groups = {
+  grade: string;
+  totalVisits: number;
 };
-const QuotaPie = ({ visits }: { visits: any }) => {
-  console.log("obj: ", visits);
-  const [width, setWidth] = useState(0);
-  const [data, setData] = useState<
-    | {
-        name: string;
-        value: number;
-        color: string;
-      }[]
+const GradesPieChart = ({ visits, title }: { visits: any; title: string }) => {
+  const [stats, setStats] = useState<
+    {
+      name: string;
+      value: number;
+      color: string;
+    }[]
   >([]);
-  const currDate = new Date();
-  const currentYear = currDate.getFullYear();
-  // ******* Quota for previous month *********
-  const currMonth = months[currDate.getMonth() - 1];
-  const thisYearVisits = visits[currentYear];
+  const [width, setWidth] = useState(0);
 
-  const getData = () => {
-    if (!thisYearVisits) {
-      return;
-    }
-    let payedVisits = 0;
-    let noPayedVisits = 0;
-    for (let [key, value] of Object.entries(thisYearVisits)) {
-      let noPayedVisitsInner = 0;
-      let payedVisitsInner = 0;
+  const groupGrades = () => {
+    const spreadVisits = [];
+    for (let [key, value] of Object.entries(visits[new Date().getFullYear()])) {
       for (let visit of value as SingleVisit[]) {
-        if (visit.havePayedTour) {
-          payedVisitsInner += 1;
-        } else {
-          noPayedVisitsInner += 1;
-        }
+        spreadVisits.push(visit);
       }
+    }
+    const groups: any[] = spreadVisits.reduce(function (prev: any, curr: any) {
+      const index = prev.findIndex((el: Groups) => el.grade == curr.grade);
+      if (index > -1) {
+        prev[index].totalVisits += 1;
+      } else {
+        prev.push({
+          grade: curr.grade,
+          totalVisits: 1,
+        });
+      }
+      return prev;
+    }, []);
+    groups.sort((a, b) => b.totalVisits - a.totalVisits);
 
-      payedVisits += payedVisitsInner;
-      noPayedVisits += noPayedVisitsInner;
+    const done = [...groups];
+    const total = done.reduce((accumulator, item) => {
+      return accumulator + item.totalVisits;
+    }, 0);
+
+    const colors = ["#E0B1B3", "#E0BB75", "#98A1D1", "#B8CAC2", "#98A1D1"];
+    const array = [];
+
+    for (let i = 0; i < done.length; i++) {
+      const percentage = (done[i].totalVisits / total) * 100;
+      array.push({
+        name: done[i].grade,
+        value: Math.round(percentage),
+        color: colors[i],
+      });
     }
 
-    const percentage = getPercentage(payedVisits, noPayedVisits);
-    const left = 100 - percentage > 0 ? 100 - percentage : 0;
-    setData([
-      { name: "Payed Vists", value: +percentage.toFixed(0), color: "#B8CAC2" },
-      { name: "Not Payed Visits", value: +left.toFixed(0), color: "#9FB5AB" },
-    ]);
+    setStats(array);
   };
 
   useEffect(() => {
-    getData();
+    groupGrades();
 
     const chartWrapper = document.querySelector(
       ".chartContainer"
@@ -78,24 +71,22 @@ const QuotaPie = ({ visits }: { visits: any }) => {
   }, []);
 
   const gradientColors = [
-    { start: "#B8CAC2", end: "#C2D6CD" },
-    { start: "#9FB5AB", end: "#87938D" },
+    { start: "#E0B1B3", end: "#F3D2D5" },
+    { start: "#E0BB75", end: "#FBE4BC" },
+    { start: "#98A1D1", end: "#D3DCFD" },
+    { start: "#B8CAC2", end: "#E8FBEB" },
+    { start: "#98A1D1", end: "#D3DCFD" },
   ];
-
   return (
-    <StyledPieChartCard2 width={width}>
+    <StyledGradesPieChart width={width}>
       <div className="chartContainer">
         <div className="chartWrapper">
-          <div className="oneHundred">
-            {" "}
-            {data.length > 0 ? data[0].value : "0"}%
-          </div>
-
+          <div className="oneHundred">100%</div>
           <ResponsiveContainer>
             <PieChart>
               <defs>
-                {Array.isArray(data) &&
-                  data.map((item, index) => {
+                {Array.isArray(stats) &&
+                  stats.map((item, index) => {
                     const { name, value, color } = item;
                     return (
                       <linearGradient id={`myGradient${index}`} key={index}>
@@ -119,13 +110,15 @@ const QuotaPie = ({ visits }: { visits: any }) => {
               <Pie
                 dataKey="value"
                 stroke="none"
-                data={data}
+                data={stats}
                 innerRadius={(width / 2) * 0.7}
                 outerRadius={width / 2}>
-                {data &&
-                  data.map((item, index) => (
-                    <Cell key={`cell-${index}`} fill={item.color} />
-                  ))}
+                {stats.map((item, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={`url(#myGradient${index})`}
+                  />
+                ))}
               </Pie>
             </PieChart>
           </ResponsiveContainer>
@@ -133,10 +126,10 @@ const QuotaPie = ({ visits }: { visits: any }) => {
       </div>
 
       <div className="statsContainer">
-        <div className="chartTitle"></div>
-        {Array.isArray(data) &&
-          data.length > 0 &&
-          data.map((item, index) => {
+        <div className="chartTitle">{title}</div>
+        {Array.isArray(stats) &&
+          stats.length > 0 &&
+          stats.map((item, index) => {
             const { name, value, color } = item;
             return (
               <div className="statItem" key={index}>
@@ -148,14 +141,15 @@ const QuotaPie = ({ visits }: { visits: any }) => {
             );
           })}
       </div>
-    </StyledPieChartCard2>
+    </StyledGradesPieChart>
   );
 };
 
-const StyledPieChartCard2 = styled.div<{ width: number }>`
+const StyledGradesPieChart = styled.div<{ width: number }>`
+  /* height: 100%; */
   width: 100%;
   display: grid;
-  grid-template-columns: 36% 64%;
+  grid-template-columns: 35% 65%;
 
   .chartContainer {
     height: 100%;
@@ -234,4 +228,4 @@ const StyledPieChartCard2 = styled.div<{ width: number }>`
   }
 `;
 
-export default QuotaPie;
+export default GradesPieChart;

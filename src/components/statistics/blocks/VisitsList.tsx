@@ -1,84 +1,63 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
 import { getRelativeDateIntl } from "@/utils/relativeTime";
+import { DatabaseSingleVisit, SingleVisit } from "@/pages";
 
-const Visits = ({ data }: { data: any }) => {
-  const [totTime, setTotTime] = useState(0);
-  const [waitPercentage1, setWaitPercentage1] = useState(0);
-  const [waitPercentage2, setWaitPercentage2] = useState(0);
+const VisitsList = ({ visits }: { visits: DatabaseSingleVisit[] }) => {
+  console.log("visits from visitslist: ", visits);
 
   return (
-    <StyledOrders className="ordersBlock">
-      <div className="ordersContainer">
+    <StyledVisits>
+      <div className="visitsContainer">
         <div className="innerContainer">
-          {Array.isArray(data.uninvoicedOrders) &&
-            data.uninvoicedOrders.length > 0 &&
-            data.uninvoicedOrders.map((data: any, index: any) => {
-              const {
-                OrderNr,
-                OrdLevAdr1,
-                OrdDatum,
-                OhOrdSumInklMoms,
-                OrdStat,
-              } = data;
+          {visits.map((visit: DatabaseSingleVisit, index: any) => {
+            const {
+              createdAt,
+              grade,
+              school,
+              teacher,
+              phone,
+              country,
+              municipality,
+            } = visit;
 
-              const dateArray = OrdDatum?.split("T");
-
-              // const status = "Pending";
-
-              var statusColor = "";
-              switch (status) {
-                case "Pending":
-                  statusColor = "#E5C68E";
-                  break;
-                case "Completed":
-                  statusColor = "#A9CFA3";
-                  break;
-                default:
-                  statusColor = "black";
-              }
-
-              return (
-                <div className="order" key={index}>
-                  <div className="date">
-                    {dateArray && getRelativeDateIntl(new Date(dateArray[0]))}
-                  </div>
-                  <div className="orderNum"># {OrderNr}</div>
-                  <div className="status">
-                    <div
-                      className="indicator"
-                      style={{ backgroundColor: "#E5C68E" }}></div>
-                    {OrdStat.status}
-                  </div>
-                  <div className="name">
-                    School
-                    <span className="bold">{OrdLevAdr1 || "N/A"}</span>
-                  </div>
-
-                  <div>
-                    <p>Name:</p>
-                    <p>Phone Number:</p>
-                  </div>
+            return (
+              <div className="visit" key={index}>
+                <div className="date">
+                  {getRelativeDateIntl(new Date(createdAt))}
                 </div>
-              );
-            })}
+                <div>{country}</div>
+                <div>{municipality}</div>
+                <div className="name">
+                  <span className="bold">{grade}</span>
+                </div>
+                <div className="name">
+                  <span className="bold">{school}</span>
+                </div>
+
+                <div>
+                  <p>Name: {teacher}</p>
+                  <p>Phone: {phone}</p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
-    </StyledOrders>
+    </StyledVisits>
   );
 };
 
-const StyledOrders = styled.div`
+const StyledVisits = styled.div`
   // height: calc(90vh - 8vh);
   margin-top: 4vh;
 
-  .ordersContainer {
+  .visitsContainer {
     height: fit-content;
     padding: 5px 100px;
     padding-bottom: 63px;
   }
 
-  .order {
+  .visit {
     background: linear-gradient(
       101.88deg,
       rgba(255, 255, 255, 0.76) 0%,
@@ -88,7 +67,7 @@ const StyledOrders = styled.div`
     margin-bottom: 35px;
     padding: 1.8vh 3%;
     display: grid;
-    grid-template-columns: 15% 15% auto 30% 20%;
+    grid-template-columns: 15% 15% 15% 15% 20% 20%;
     align-items: center;
     border-radius: 3vh;
 
@@ -99,27 +78,6 @@ const StyledOrders = styled.div`
     div {
       font-size: 1.9vh;
       letter-spacing: -0.005em;
-    }
-
-    .orderNum {
-      font-size: 1.4vh;
-      letter-spacing: 0.1em;
-      color: #333333;
-    }
-
-    .status {
-      display: flex;
-      gap: 15px;
-      align-items: center;
-      letter-spacing: 0.02em;
-      font-size: 1.3vh;
-      color: #333333;
-
-      .indicator {
-        height: 1.7vh;
-        width: 1.7vh;
-        border-radius: 1.7vh;
-      }
     }
 
     .bold {
@@ -144,4 +102,4 @@ const StyledOrders = styled.div`
   }
 `;
 
-export default Visits;
+export default VisitsList;

@@ -4,15 +4,14 @@ import Logo from "../../../public/logo.svg";
 import Image from "next/image";
 interface HeaderProps {
   title: string;
-  view: number;
 }
 
 interface Props {
   fontSize: string;
   height: string;
 }
-const Header = ({ title, view }: HeaderProps) => {
-  const fontSize = view > 1 ? "3.6vh" : "4.7vh";
+const Header = ({ title }: HeaderProps) => {
+  const fontSize = title === "Visits" ? "3.6vh" : "4.7vh";
   const height = "8vh";
 
   return (
@@ -24,13 +23,15 @@ const Header = ({ title, view }: HeaderProps) => {
         </div>
         <div></div>
       </div>
-      {view === 1 && (
+      {title === "Visits" && (
         <div className="ordersTitles">
           <div className="container">
             <div>Date</div>
             <div>Country</div>
             <div>Municipality</div>
             <div>School</div>
+            <div>Grade</div>
+
             <div>Teacher</div>
           </div>
         </div>
@@ -83,7 +84,7 @@ const StyledHeader = styled.div<Props>`
     .container {
       padding: 0 3%;
       display: grid;
-      grid-template-columns: 15% 15% auto 30% 20%;
+      grid-template-columns: 15% 15% 15% 15% 20% 20%;
     }
   }
 `;
