@@ -19,7 +19,7 @@ const Header = ({ title }: HeaderProps) => {
       <div className="headerContainer">
         <div>{title}</div>
         <div>
-          <Image src={Logo} alt="nrm" />
+          <Image src={Logo} alt="nrm" height={85} />
         </div>
         <div></div>
       </div>
