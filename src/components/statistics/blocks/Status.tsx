@@ -5,6 +5,7 @@ import VisitsBarChart from "@/components/statistics/VisitsBarChart";
 import PieChart from "@/components/statistics/PieChart";
 import QuotaPie from "@/components/statistics/QuotaPie";
 import VisitsCount from "@/components/statistics/VisitsCount";
+import GradesPieChart from "../GradesPieChart";
 interface StatusProps {
   data: any;
   barChart: any;
@@ -44,8 +45,9 @@ const Status = ({ data, barChart }: StatusProps) => {
         <div className="pieChartContainer">
           <div className="title">This Year</div>
           <div className="pieChartCardContainer">
-            {/* <PieChart title="Local/international" orders={data.orders} />
-            <PieChart title="Grades" orders={data.orders} /> */}
+            {/* <PieChart title="Local/international" orders={data.orders} /> */}
+            <GradesPieChart title="Grades" visits={data.organizedByYear} />
+            {/* <PieChart title="Grades" orders={data.orders} /> */}
           </div>
         </div>
 
