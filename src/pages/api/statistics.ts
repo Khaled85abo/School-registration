@@ -5,7 +5,7 @@ import {
   months,
   getBarChart,
 } from "../../../functions";
-import { visits } from "../../assets/lists/visits";
+import { visits } from "./visitsData";
 import { NextApiRequest, NextApiResponse } from "next";
 import { SingleVisit } from "..";
 
