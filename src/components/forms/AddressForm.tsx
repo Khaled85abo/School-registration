@@ -3,8 +3,8 @@ import Image from "next/image";
 import sweden from "../../assets/svg/sweden.svg";
 import world from "../../assets/svg/world.svg";
 import styled from "styled-components";
-import municipalities from "@/assets/JSON/municipalities";
-import countries from "@/assets/JSON/countries";
+import municipalities from "@/assets/lists/municipalities";
+import countries from "@/assets/lists/countries";
 type AddressData = {
   country: string;
   municipality: string | undefined;

@@ -1,8 +1,8 @@
-import { Class, CLASSES } from "@/pages";
+import { CLASSES } from "@/pages";
 import styled from "styled-components";
 import { Wrapper } from "./StyledComponents";
 type ClassData = {
-  grade: Class;
+  grade: string;
   studentsCount: number;
   teachersCount: number;
   havePayedTour: boolean;
@@ -52,8 +52,8 @@ const ClassForm = ({
             }}>
             <option value="">--Please choose an option--</option>
             {Object.keys(CLASSES).map((key, index) => (
-              <option key={index} value={CLASSES[key]}>
-                {CLASSES[key]}
+              <option key={index} value={key}>
+                {key}
               </option>
             ))}
           </select>

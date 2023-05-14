@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 // Components
 import VisitsBarChart from "@/components/statistics/VisitsBarChart";
-import CustomPieChart from "@/components/statistics/CustomPieChart";
+import PieChart from "@/components/statistics/PieChart";
 import QuotaPie from "@/components/statistics/QuotaPie";
 import VisitsCount from "@/components/statistics/VisitsCount";
 interface StatusProps {
@@ -44,8 +44,8 @@ const Status = ({ data, seller }: StatusProps) => {
         <div className="pieChartContainer">
           <div className="title">This Year</div>
           <div className="pieChartCardContainer">
-            <CustomPieChart title="Local/international" orders={data.orders} />
-            <CustomPieChart title="Grades" orders={data.orders} />
+            <PieChart title="Local/international" orders={data.orders} />
+            <PieChart title="Grades" orders={data.orders} />
           </div>
         </div>
 

@@ -15,7 +15,7 @@ const Statistics = () => {
   const [data, setData] = useState<any>(null);
   const getVisits = async () => {
     try {
-      const res = await fetch("api/orders");
+      const res = await fetch("api/statistics");
       const resData = await res.json();
       if (resData.message) {
         throw new Error();
@@ -43,10 +43,10 @@ const Statistics = () => {
       <div className="viewContainer">
         {data ? (
           <>
-            <Status
+            {/* <Status
               data={data.allOrders}
               seller={data.sellersMonthlySales[4]}
-            />
+            /> */}
           </>
         ) : (
           <LoadingContainer>

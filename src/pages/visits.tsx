@@ -16,13 +16,12 @@ const Visits = () => {
   const [data, setData] = useState<any>(null);
   const getVisits = async () => {
     try {
-      const res = await fetch("api/orders");
+      const res = await fetch("api/visits");
       const resData = await res.json();
-      if (resData.message) {
-        throw new Error();
+      if (resData.visits) {
+        setData(resData.visits);
+        console.log("data from backend: ", resData);
       }
-      console.log("data from backend: ", resData);
-      setData(resData);
     } catch (err) {
       console.log("Server is down!", err);
       console.log("fakeData: ", fakeData);
@@ -43,7 +42,7 @@ const Visits = () => {
       <Header title="Visits" />
       <div className="viewContainer">
         {data ? (
-          <VisitsList data={data.ref} />
+          <VisitsList visits={data} />
         ) : (
           <LoadingContainer>
             <h3>Loading...</h3>
@@ -73,6 +72,7 @@ const StyledIndex = styled.div`
 `;
 const LoadingContainer = styled.div`
   height: 100%;
+  margin-top: 5rem;
   display: flex;
   justify-content: center;
   align-items: center;

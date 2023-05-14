@@ -30,6 +30,8 @@ const Header = ({ title }: HeaderProps) => {
             <div>Country</div>
             <div>Municipality</div>
             <div>School</div>
+            <div>Grade</div>
+
             <div>Teacher</div>
           </div>
         </div>
@@ -82,7 +84,7 @@ const StyledHeader = styled.div<Props>`
     .container {
       padding: 0 3%;
       display: grid;
-      grid-template-columns: 15% 15% auto 30% 20%;
+      grid-template-columns: 15% 15% 15% 15% 20% 20%;
     }
   }
 `;
