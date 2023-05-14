@@ -1,4 +1,3 @@
-import { PrismaClient } from "@prisma/client";
 import {
   getMonthlySums,
   organizeByYear,
@@ -7,9 +6,7 @@ import {
 } from "../../../functions";
 import { NextApiRequest, NextApiResponse } from "next";
 import { SingleVisit } from "..";
-import visits from "../../assets/lists/visits";
-
-const prisma = new PrismaClient();
+import { visits } from "../../assets/lists/visits";
 
 export default async function handler(
   req: NextApiRequest,
