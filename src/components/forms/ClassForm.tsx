@@ -23,7 +23,7 @@ const ClassForm = ({
   return (
     <>
       <Wrapper>
-        <h2>Class's Details</h2>
+        <h2>Class&apos;s Details</h2>
         <div className="form-wrapper">
           <label>School*</label>
           <input

@@ -77,19 +77,26 @@ export default function Home() {
     isFirstStep,
     isLastStep,
   } = useMultistepForm([
-    <ChooseLocation country={data.country} updateFields={updateFields} />,
+    <ChooseLocation
+      key={1}
+      country={data.country}
+      updateFields={updateFields}
+    />,
     <AddressForm
+      key={2}
       country={data.country}
       municipality={data.municipality}
       updateFields={updateFields}
     />,
     <TeacherForm
+      key={3}
       teacher={data.teacher}
       phone={data.phone}
       email={data.email}
       updateFields={updateFields}
     />,
     <ClassForm
+      key={4}
       updateFields={updateFields}
       school={data.school}
       studentsCount={data.studentsCount}
