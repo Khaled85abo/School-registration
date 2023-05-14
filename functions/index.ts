@@ -63,6 +63,7 @@ export function getMonthlySums(organized: VisitsOrganizedByYear) {
 
     if (months.indexOf(order1.month) < months.indexOf(order2.month)) return -1;
     if (months.indexOf(order2.month) > months.indexOf(order2.month)) return 1;
+    return 0;
   });
 
   return totalPerMonth;

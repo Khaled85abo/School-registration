@@ -35,7 +35,7 @@ export type SingleVisit = {
   phone?: string;
   email?: string;
   museumId: number | null;
-  testCreateAt?: Date;
+  testCreateAt?: Date | string;
 };
 export type DatabaseSingleVisit = SingleVisit & {
   id: number;

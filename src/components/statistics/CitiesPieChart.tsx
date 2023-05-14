@@ -1,22 +1,33 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+import { SingleVisit } from "@/pages";
 
+type Groups = {
+  totalVisits: number;
+  municipality: string;
+};
 const CitiesPieChart = ({ visits, title }: { visits: any; title: string }) => {
-  const [stats, setStats] = useState([]);
+  const [stats, setStats] = useState<
+    {
+      name: string;
+      value: number;
+      color: string;
+    }[]
+  >([]);
   const [width, setWidth] = useState(0);
 
   const groupCities = () => {
     const spreadVisits = [];
     for (let [key, value] of Object.entries(visits[new Date().getFullYear()])) {
-      for (let visit of value) {
+      for (let visit of value as SingleVisit[]) {
         spreadVisits.push(visit);
       }
     }
-    const groups: any[] = spreadVisits
+    const groups: Groups[] = spreadVisits
       .reduce(function (prev: any, curr: any) {
         const index = prev.findIndex(
-          (el) => el.municipality == curr.municipality
+          (el: Groups) => el.municipality == curr.municipality
         );
         if (index > -1) {
           prev[index].totalVisits += 1;
@@ -28,7 +39,10 @@ const CitiesPieChart = ({ visits, title }: { visits: any; title: string }) => {
         }
         return prev;
       }, [])
-      .sort((a, b) => b.totalVisits - a.totalVisits && a.municipality);
+      .sort(
+        (a: Groups, b: Groups) =>
+          b.totalVisits - a.totalVisits && a.municipality
+      );
     const firstFive = groups.slice(0, 4);
     const rest = groups.slice(4, groups.length);
     const restSum = rest.reduce((prev, curr) => (prev += curr.totalVisits), 0);
@@ -43,12 +57,13 @@ const CitiesPieChart = ({ visits, title }: { visits: any; title: string }) => {
 
     const colors = ["#E0B1B3", "#E0BB75", "#98A1D1", "#B8CAC2", "#98A1D1"];
     const array = [];
-    for (const [index, item] of done.entries()) {
-      const percentage = (item.totalVisits / total) * 100;
+
+    for (let i = 0; i < done.length; i++) {
+      const percentage = (done[i].totalVisits / total) * 100;
       array.push({
-        name: item.municipality,
+        name: done[i].municipality,
         value: Math.round(percentage),
-        color: colors[index],
+        color: colors[i],
       });
     }
     // console.log(array);
@@ -58,10 +73,13 @@ const CitiesPieChart = ({ visits, title }: { visits: any; title: string }) => {
 
   useEffect(() => {
     groupCities();
-
-    const chartWrapper = document.querySelector(".chartContainer");
-    const chartWrapperWidth = chartWrapper.offsetWidth;
-    setWidth(chartWrapperWidth);
+    const chartWrapper = document.querySelector(
+      ".chartContainer"
+    ) as HTMLElement;
+    if (chartWrapper) {
+      const chartWrapperWidth = chartWrapper.offsetWidth;
+      setWidth(chartWrapperWidth);
+    }
   }, []);
 
   const gradientColors = [
@@ -102,6 +120,7 @@ const CitiesPieChart = ({ visits, title }: { visits: any; title: string }) => {
               </defs>
 
               <Pie
+                dataKey="value"
                 stroke="none"
                 data={stats}
                 innerRadius={(width / 2) * 0.7}

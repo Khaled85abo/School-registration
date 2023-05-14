@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+import { SingleVisit } from "@/pages";
 
 export const months = [
   "Jan",
@@ -22,7 +23,13 @@ const getPercentage = (sales: number, budget: number) => {
 const QuotaPie = ({ visits }: { visits: any }) => {
   console.log("obj: ", visits);
   const [width, setWidth] = useState(0);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<
+    | {
+        name: string;
+        value: number;
+        color: string;
+      }[]
+  >([]);
   const currDate = new Date();
   const currentYear = currDate.getFullYear();
   // ******* Quota for previous month *********
@@ -36,27 +43,19 @@ const QuotaPie = ({ visits }: { visits: any }) => {
     let payedVisits = 0;
     let noPayedVisits = 0;
     for (let [key, value] of Object.entries(thisYearVisits)) {
-      const { noPayedVisitsInner, payedVisitsInner } = value.reduce(
-        (prev, curr) => {
-          if (curr.havePayedTour) {
-            prev.payedVisitsInner += 1;
-          } else {
-            prev.noPayedVisitsInner += 1;
-          }
-
-          return prev;
-        },
-        {
-          noPayedVisitsInner: 0,
-          payedVisitsInner: 0,
+      let noPayedVisitsInner = 0;
+      let payedVisitsInner = 0;
+      for (let visit of value as SingleVisit[]) {
+        if (visit.havePayedTour) {
+          payedVisitsInner += 1;
+        } else {
+          noPayedVisitsInner += 1;
         }
-      );
+      }
+
       payedVisits += payedVisitsInner;
       noPayedVisits += noPayedVisitsInner;
     }
-
-    console.log(noPayedVisits);
-    console.log(payedVisits);
 
     const percentage = getPercentage(payedVisits, noPayedVisits);
     const left = 100 - percentage > 0 ? 100 - percentage : 0;
@@ -68,12 +67,14 @@ const QuotaPie = ({ visits }: { visits: any }) => {
 
   useEffect(() => {
     getData();
-  }, []);
 
-  useEffect(() => {
-    const chartWrapper = document.querySelector(".chartContainer");
-    const chartWrapperWidth = chartWrapper.offsetWidth;
-    setWidth(chartWrapperWidth);
+    const chartWrapper = document.querySelector(
+      ".chartContainer"
+    ) as HTMLElement;
+    if (chartWrapper) {
+      const chartWrapperWidth = chartWrapper.offsetWidth;
+      setWidth(chartWrapperWidth);
+    }
   }, []);
 
   const gradientColors = [
@@ -85,7 +86,10 @@ const QuotaPie = ({ visits }: { visits: any }) => {
     <StyledPieChartCard2 width={width}>
       <div className="chartContainer">
         <div className="chartWrapper">
-          <div className="oneHundred"> {data ? data[0].value : "0"}%</div>
+          <div className="oneHundred">
+            {" "}
+            {data.length > 0 ? data[0].value : "0"}%
+          </div>
 
           <ResponsiveContainer>
             <PieChart>
@@ -113,6 +117,7 @@ const QuotaPie = ({ visits }: { visits: any }) => {
               </defs>
 
               <Pie
+                dataKey="value"
                 stroke="none"
                 data={data}
                 innerRadius={(width / 2) * 0.7}
@@ -147,7 +152,7 @@ const QuotaPie = ({ visits }: { visits: any }) => {
   );
 };
 
-const StyledPieChartCard2 = styled.div`
+const StyledPieChartCard2 = styled.div<{ width: number }>`
   width: 100%;
   display: grid;
   grid-template-columns: 36% 64%;

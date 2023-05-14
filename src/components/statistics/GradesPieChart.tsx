@@ -1,20 +1,31 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+import { SingleVisit } from "@/pages";
 
+type Groups = {
+  grade: string;
+  totalVisits: number;
+};
 const GradesPieChart = ({ visits, title }: { visits: any; title: string }) => {
-  const [stats, setStats] = useState([]);
+  const [stats, setStats] = useState<
+    {
+      name: string;
+      value: number;
+      color: string;
+    }[]
+  >([]);
   const [width, setWidth] = useState(0);
 
   const groupGrades = () => {
     const spreadVisits = [];
     for (let [key, value] of Object.entries(visits[new Date().getFullYear()])) {
-      for (let visit of value) {
+      for (let visit of value as SingleVisit[]) {
         spreadVisits.push(visit);
       }
     }
     const groups: any[] = spreadVisits.reduce(function (prev: any, curr: any) {
-      const index = prev.findIndex((el) => el.grade == curr.grade);
+      const index = prev.findIndex((el: Groups) => el.grade == curr.grade);
       if (index > -1) {
         prev[index].totalVisits += 1;
       } else {
@@ -34,12 +45,13 @@ const GradesPieChart = ({ visits, title }: { visits: any; title: string }) => {
 
     const colors = ["#E0B1B3", "#E0BB75", "#98A1D1", "#B8CAC2", "#98A1D1"];
     const array = [];
-    for (const [index, item] of done.entries()) {
-      const percentage = (item.totalVisits / total) * 100;
+
+    for (let i = 0; i < done.length; i++) {
+      const percentage = (done[i].totalVisits / total) * 100;
       array.push({
-        name: item.grade,
+        name: done[i].grade,
         value: Math.round(percentage),
-        color: colors[index],
+        color: colors[i],
       });
     }
 
@@ -49,9 +61,13 @@ const GradesPieChart = ({ visits, title }: { visits: any; title: string }) => {
   useEffect(() => {
     groupGrades();
 
-    const chartWrapper = document.querySelector(".chartContainer");
-    const chartWrapperWidth = chartWrapper.offsetWidth;
-    setWidth(chartWrapperWidth);
+    const chartWrapper = document.querySelector(
+      ".chartContainer"
+    ) as HTMLElement;
+    if (chartWrapper) {
+      const chartWrapperWidth = chartWrapper.offsetWidth;
+      setWidth(chartWrapperWidth);
+    }
   }, []);
 
   const gradientColors = [
@@ -92,6 +108,7 @@ const GradesPieChart = ({ visits, title }: { visits: any; title: string }) => {
               </defs>
 
               <Pie
+                dataKey="value"
                 stroke="none"
                 data={stats}
                 innerRadius={(width / 2) * 0.7}
