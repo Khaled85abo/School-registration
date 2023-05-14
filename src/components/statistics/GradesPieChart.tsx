@@ -13,7 +13,6 @@ const GradesPieChart = ({ visits, title }: { visits: any; title: string }) => {
         spreadVisits.push(visit);
       }
     }
-    // Combine the orders by "OrdLevAdr1" and sum the value of "OhOrdSumInklMoms".
     const groups: any[] = spreadVisits.reduce(function (prev: any, curr: any) {
       const index = prev.findIndex((el) => el.grade == curr.grade);
       if (index > -1) {
@@ -29,15 +28,10 @@ const GradesPieChart = ({ visits, title }: { visits: any; title: string }) => {
     groups.sort((a, b) => b.totalVisits - a.totalVisits);
 
     const done = [...groups];
-    // console.log(done);
-
-    // Calculat the sum of the "OhOrdSumInklMoms" for the "done" array.
     const total = done.reduce((accumulator, item) => {
       return accumulator + item.totalVisits;
     }, 0);
-    // console.log(total);
 
-    // Transform the "OhOrdSumInkl Moms" to a percentage number based on the "total".
     const colors = ["#E0B1B3", "#E0BB75", "#98A1D1", "#B8CAC2", "#98A1D1"];
     const array = [];
     for (const [index, item] of done.entries()) {
@@ -48,7 +42,6 @@ const GradesPieChart = ({ visits, title }: { visits: any; title: string }) => {
         color: colors[index],
       });
     }
-    // console.log(array);
 
     setStats(array);
   };

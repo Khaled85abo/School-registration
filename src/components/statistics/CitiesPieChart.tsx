@@ -2,84 +2,51 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 
-const CustomPieChart = ({ orders, title }: { orders: any; title: string }) => {
+const CitiesPieChart = ({ visits, title }: { visits: any; title: string }) => {
   const [stats, setStats] = useState([]);
   const [width, setWidth] = useState(0);
 
-  const groupOrders = () => {
-    // Combine the orders by "OrdLevAdr1" and sum the value of "OhOrdSumInklMoms".
-    var groups: any[] = [];
-    orders.reduce(function (res: any, value: any) {
-      if (!res[value.OrdLevAdr1]) {
-        res[value.OrdLevAdr1] = {
-          OrdLevAdr1: value.OrdLevAdr1,
-          OhOrdSumInklMoms: 0,
-          OrdDatum: value.OrdDatum,
-        };
-        groups.push(res[value.OrdLevAdr1]);
+  const groupCities = () => {
+    const spreadVisits = [];
+    for (let [key, value] of Object.entries(visits[new Date().getFullYear()])) {
+      for (let visit of value) {
+        spreadVisits.push(visit);
       }
-      res[value.OrdLevAdr1].OhOrdSumInklMoms += value.OhOrdSumInklMoms;
-      return res;
-    }, {});
-    // console.log("groups", groups);
-
-    // Sort the combined orders by the "OhOrdSumInklMoms" total.
-    const sorted = groups.sort(
-      (a, b) => b.OhOrdSumInklMoms - a.OhOrdSumInklMoms
-    );
-    // console.log("sorted", sorted);
-
-    // Filter the objects by "OrdDatum".
-    const filtered = [];
-    for (const item of sorted) {
-      // if (item.OrdDatum.includes("18T")) filtered.push(item);
-      filtered.push(item);
     }
-    // console.log("filtered", filtered);
+    const groups: any[] = spreadVisits
+      .reduce(function (prev: any, curr: any) {
+        const index = prev.findIndex(
+          (el) => el.municipality == curr.municipality
+        );
+        if (index > -1) {
+          prev[index].totalVisits += 1;
+        } else {
+          prev.push({
+            municipality: curr.municipality,
+            totalVisits: 1,
+          });
+        }
+        return prev;
+      }, [])
+      .sort((a, b) => b.totalVisits - a.totalVisits && a.municipality);
+    const firstFive = groups.slice(0, 4);
+    const rest = groups.slice(4, groups.length);
+    const restSum = rest.reduce((prev, curr) => (prev += curr.totalVisits), 0);
+    const done = [
+      ...firstFive,
+      { municipality: "Others", totalVisits: restSum },
+    ];
 
-    // Get the first 3 objects without the object with "OrdLevAdr1" that's equal to null
-    const first3 = [];
-    for (const [index, item] of filtered.entries()) {
-      const maxIndex = filtered[0]?.OrdLevAdr1 === null ? 3 : 2;
-      if (
-        (filtered[0]?.OrdLevAdr1 !== null || index !== 0) &&
-        index <= maxIndex
-      )
-        first3.push(item);
-    }
-    // console.log("first3", first3);
-
-    // Get all the objects except for the objects in "first3".
-    const rest = [];
-    for (const [index, item] of filtered.entries()) {
-      const startIndex = filtered[0]?.OrdLevAdr1 === null ? 3 : 2;
-      if (index > startIndex) rest.push(item);
-    }
-    // console.log("rest", rest);
-
-    // Calculat the sum of the "OhOrdSumInklMoms" for the "rest" array.
-    const sum = rest.reduce((accumulator, object) => {
-      return accumulator + object.OhOrdSumInklMoms;
-    }, 0);
-    // console.log(sum);
-
-    // Put together the "first3" array with the "sum" value.
-    const done = [...first3, { OrdLevAdr1: "Other", OhOrdSumInklMoms: sum }];
-    // console.log(done);
-
-    // Calculat the sum of the "OhOrdSumInklMoms" for the "done" array.
     const total = done.reduce((accumulator, item) => {
-      return accumulator + item.OhOrdSumInklMoms;
+      return accumulator + item.totalVisits;
     }, 0);
-    // console.log(total);
 
-    // Transform the "OhOrdSumInkl Moms" to a percentage number based on the "total".
-    const colors = ["#E0B1B3", "#E0BB75", "#98A1D1", "#B8CAC2"];
+    const colors = ["#E0B1B3", "#E0BB75", "#98A1D1", "#B8CAC2", "#98A1D1"];
     const array = [];
     for (const [index, item] of done.entries()) {
-      const percentage = (item.OhOrdSumInklMoms / total) * 100;
+      const percentage = (item.totalVisits / total) * 100;
       array.push({
-        name: item.OrdLevAdr1,
+        name: item.municipality,
         value: Math.round(percentage),
         color: colors[index],
       });
@@ -90,21 +57,22 @@ const CustomPieChart = ({ orders, title }: { orders: any; title: string }) => {
   };
 
   useEffect(() => {
-    if (orders) groupOrders();
+    groupCities();
 
     const chartWrapper = document.querySelector(".chartContainer");
     const chartWrapperWidth = chartWrapper.offsetWidth;
     setWidth(chartWrapperWidth);
-  }, [orders]);
+  }, []);
 
   const gradientColors = [
     { start: "#E0B1B3", end: "#F3D2D5" },
     { start: "#E0BB75", end: "#FBE4BC" },
     { start: "#98A1D1", end: "#D3DCFD" },
     { start: "#B8CAC2", end: "#E8FBEB" },
+    { start: "#98A1D1", end: "#D3DCFD" },
   ];
   return (
-    <StyledCustomPieChart width={width}>
+    <StyledCitiesPieChart width={width}>
       <div className="chartContainer">
         <div className="chartWrapper">
           <div className="oneHundred">100%</div>
@@ -166,11 +134,11 @@ const CustomPieChart = ({ orders, title }: { orders: any; title: string }) => {
             );
           })}
       </div>
-    </StyledCustomPieChart>
+    </StyledCitiesPieChart>
   );
 };
 
-const StyledCustomPieChart = styled.div`
+const StyledCitiesPieChart = styled.div<{ width: number }>`
   /* height: 100%; */
   width: 100%;
   display: grid;
@@ -253,4 +221,4 @@ const StyledCustomPieChart = styled.div`
   }
 `;
 
-export default CustomPieChart;
+export default CitiesPieChart;

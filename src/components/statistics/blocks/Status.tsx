@@ -2,10 +2,11 @@ import styled from "styled-components";
 
 // Components
 import VisitsBarChart from "@/components/statistics/VisitsBarChart";
-import PieChart from "@/components/statistics/PieChart";
+import PieChart from "@/components/statistics/CitiesPieChart";
 import QuotaPie from "@/components/statistics/QuotaPie";
 import VisitsCount from "@/components/statistics/VisitsCount";
 import GradesPieChart from "../GradesPieChart";
+import CitiesPieChart from "@/components/statistics/CitiesPieChart";
 interface StatusProps {
   data: any;
   barChart: any;
@@ -47,6 +48,7 @@ const Status = ({ data, barChart }: StatusProps) => {
           <div className="pieChartCardContainer">
             {/* <PieChart title="Local/international" orders={data.orders} /> */}
             <GradesPieChart title="Grades" visits={data.organizedByYear} />
+            <CitiesPieChart title="Cities" visits={data.organizedByYear} />
             {/* <PieChart title="Grades" orders={data.orders} /> */}
           </div>
         </div>
