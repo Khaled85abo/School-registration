@@ -89,7 +89,7 @@ export function getBarChart(organized: VisitsOrganizedByYear) {
   }
   if (organized[currentYear - 1]) {
     for (let [month, visits] of Object.entries(organized[currentYear - 1])) {
-      const prevYearVisits = month.length;
+      const prevYearVisits = visits.length;
       const monthIndex = output.findIndex((obj) => obj.month == month);
       if (monthIndex > -1) {
         output[monthIndex].prevYearVisits = prevYearVisits;
@@ -101,138 +101,8 @@ export function getBarChart(organized: VisitsOrganizedByYear) {
           prevYearVisits: prevYearVisits,
         });
       }
-      // for (let visit of visits) {
-      //   const orderPrice = 1;
-      //    const monthIndex = output[sellerIndex].sales.findIndex(
-      //      (el) => el.month == month
-      //    );
-      //   if (monthIndex > -1) {
-      //     const monthIndex = output[sellerIndex].sales.findIndex(
-      //       (el) => el.month == month
-      //     );
-      //     if (monthIndex > -1) {
-      //       output[sellerIndex].sales[monthIndex].prevYearSales += orderPrice;
-      //     } else {
-      //       output[sellerIndex].sales.push({
-      //         month,
-      //         sales: 0,
-      //         prevYearSales: orderPrice,
-      //         budget: getBudget(order.VRef, month, sellersBudgets),
-      //       });
-      //     }
-      //   } else {
-      //     output.push({
-      //       month,
-      //       totalVisits: 0,
-      //       internationalVisits: 0,
-      //       prevYearVisits: 0,
-      //     });
-      //   }
-      // }
     }
   }
 
   return output;
 }
-// export function getSellersSales(organizedOrders, sellersBudgets) {
-//   const output = {};
-//   const date = new Date();
-//   const currentYear = date.getFullYear();
-//   if (organizedOrders[currentYear]) {
-//     for (let [month, orders] of Object.entries(organizedOrders[currentYear])) {
-//       for (let order of orders) {
-//         const orderPrice = 1;
-//         if (output[order.VRef]) {
-//           const monthIndex = output[order.VRef].findIndex(
-//             (el) => el.month == month
-//           );
-//           if (monthIndex > -1) {
-//             output[order.VRef][monthIndex].sales += orderPrice;
-//           } else {
-//             output[order.VRef].push({
-//               month,
-//               sales: orderPrice,
-//               prevYearSales: 0,
-//               budget: getBudget(order.VRef, month, sellersBudgets),
-//             });
-//           }
-//         } else {
-//           output[order.VRef] = [
-//             {
-//               month,
-//               sales: orderPrice,
-//               prevYearSales: 0,
-//               budget: getBudget(order.VRef, month, sellersBudgets),
-//             },
-//           ];
-//         }
-//       }
-//     }
-//   }
-//   if (organizedOrders[currentYear - 1]) {
-//     for (let [month, orders] of Object.entries(
-//       organizedOrders[currentYear - 1]
-//     )) {
-//       for (let order of orders) {
-//         const orderPrice = 1;
-//         if (output[order.VRef]) {
-//           const monthIndex = output[order.VRef].findIndex(
-//             (el) => el.month == month
-//           );
-//           if (monthIndex > -1) {
-//             output[order.VRef][monthIndex].prevYearSales += orderPrice;
-//           } else {
-//             output[order.VRef].push({
-//               month,
-//               sales: 0,
-//               prevYearSales: orderPrice,
-//               budget: getBudget(order.VRef, month, sellersBudgets),
-//             });
-//           }
-//         } else {
-//           output[order.VRef] = [
-//             {
-//               month,
-//               sales: 0,
-//               prevYearSales: orderPrice,
-//               budget: getBudget(order.VRef, month, sellersBudgets),
-//             },
-//           ];
-//         }
-//       }
-//     }
-//   }
-
-//   for (let [seller, array] of Object.entries(output)) {
-//     for (let month of months) {
-//       const index = output[seller].findIndex((arr) => arr.month == month);
-//       if (index == -1) {
-//         output[seller].push({
-//           month,
-//           sales: 0,
-//           prevYearSales: 0,
-//           budget: getBudget(seller, month, sellersBudgets),
-//         });
-//       }
-//     }
-//   }
-
-//   for (let values of Object.values(output)) {
-//     for (let obj of values) {
-//       obj.sales = Math.floor(obj.sales);
-//     }
-//     values.sort(function (order1, order2) {
-//       if (months.indexOf(order1.month) < months.indexOf(order2.month))
-//         return -1;
-//       if (months.indexOf(order2.month) > months.indexOf(order2.month)) return 1;
-//     });
-//   }
-//   const array = [];
-//   for (let [seller, arr] of Object.entries(output)) {
-//     array.push({
-//       name: seller,
-//       sales: arr,
-//     });
-//   }
-//   return array;
-// }

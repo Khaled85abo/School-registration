@@ -15,7 +15,7 @@ const Statistics = () => {
   const [data, setData] = useState<any>(null);
   const getVisits = async () => {
     try {
-      const res = await fetch("api/statistic");
+      const res = await fetch("api/statistics");
       const resData = await res.json();
 
       console.log("data from backend: ", resData);
