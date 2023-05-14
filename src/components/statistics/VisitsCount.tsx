@@ -1,15 +1,6 @@
 import styled from "styled-components";
 import { FiHeart, FiAward, FiLoader, FiLogOut } from "react-icons/fi";
-
-export function getAmount(num: number) {
-  if (num > 999999) {
-    return parseFloat((num / 1000000).toFixed(2)).toString() + "M";
-  }
-  if (num > 999) {
-    return parseFloat((num / 1000).toFixed(1)).toString() + "K";
-  }
-  return "0";
-}
+import { kFormatter } from "@/utils/amounFormatter";
 
 interface VisitsStatusProps {
   data: any;
@@ -54,7 +45,7 @@ const VisitsCount = ({ data }: VisitsStatusProps) => {
                 style={{
                   color: color,
                 }}>
-                {getAmount(amount)}
+                {kFormatter(amount)}
               </AmountStyle>
             </div>
           );

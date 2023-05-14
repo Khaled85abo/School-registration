@@ -17,9 +17,7 @@ const Statistics = () => {
     try {
       const res = await fetch("api/statistics");
       const resData = await res.json();
-      if (resData.message) {
-        throw new Error();
-      }
+
       console.log("data from backend: ", resData);
       setData(resData);
     } catch (err) {
@@ -43,10 +41,7 @@ const Statistics = () => {
       <div className="viewContainer">
         {data ? (
           <>
-            {/* <Status
-              data={data.allOrders}
-              seller={data.sellersMonthlySales[4]}
-            /> */}
+            <Status data={data} barChart={data.barChart} />
           </>
         ) : (
           <LoadingContainer>

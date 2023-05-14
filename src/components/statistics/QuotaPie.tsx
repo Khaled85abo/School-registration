@@ -19,37 +19,56 @@ export const months = [
 const getPercentage = (sales: number, budget: number) => {
   return (sales * 100) / budget;
 };
-const QuotaPie = ({ seller }: { seller: any }) => {
-  console.log("Seller obj: ", seller);
+const QuotaPie = ({ visits }: { visits: any }) => {
+  console.log("obj: ", visits);
   const [width, setWidth] = useState(0);
   const [data, setData] = useState(null);
   const currDate = new Date();
+  const currentYear = currDate.getFullYear();
   // ******* Quota for previous month *********
   const currMonth = months[currDate.getMonth() - 1];
-  const getData = () => {
-    const { budget, sales } = seller.reduce(
-      (prev, curr) => {
-        prev.budget += curr.budget;
-        prev.sales += curr.sales;
+  const thisYearVisits = visits[currentYear];
 
-        return prev;
-      },
-      {
-        budget: 0,
-        sales: 0,
-      }
-    );
-    const percentage = getPercentage(sales, budget);
+  const getData = () => {
+    if (!thisYearVisits) {
+      return;
+    }
+    let payedVisits = 0;
+    let noPayedVisits = 0;
+    for (let [key, value] of Object.entries(thisYearVisits)) {
+      const { noPayedVisitsInner, payedVisitsInner } = value.reduce(
+        (prev, curr) => {
+          if (curr.havePayedTour) {
+            prev.payedVisitsInner += 1;
+          } else {
+            prev.noPayedVisitsInner += 1;
+          }
+
+          return prev;
+        },
+        {
+          noPayedVisitsInner: 0,
+          payedVisitsInner: 0,
+        }
+      );
+      payedVisits += payedVisitsInner;
+      noPayedVisits += noPayedVisitsInner;
+    }
+
+    console.log(noPayedVisits);
+    console.log(payedVisits);
+
+    const percentage = getPercentage(payedVisits, noPayedVisits);
     const left = 100 - percentage > 0 ? 100 - percentage : 0;
     setData([
-      { name: "Reached goal", value: +percentage.toFixed(0), color: "#B8CAC2" },
-      { name: "Left", value: +left.toFixed(0), color: "#9FB5AB" },
+      { name: "Payed Vists", value: +percentage.toFixed(0), color: "#B8CAC2" },
+      { name: "Not Payed Visits", value: +left.toFixed(0), color: "#9FB5AB" },
     ]);
   };
 
   useEffect(() => {
     getData();
-  }, [seller]);
+  }, []);
 
   useEffect(() => {
     const chartWrapper = document.querySelector(".chartContainer");

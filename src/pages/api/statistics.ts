@@ -1,11 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 import {
   getMonthlySums,
-  getSpecificYearOrMonthSum,
-  getThisWeekOrdersSum,
   organizeByYear,
   months,
-  orderStatus,
+  getBarChart,
 } from "../../../functions";
 import { visits } from "../../assets/lists/visits";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -42,35 +40,17 @@ export default async function handler(
         (sum) =>
           Number(sum.year) == currentYear - 1 && sum.month == currentMonth
       )[0].total;
-      //   const allOrdersMonthlyValues = getMonthlySums(
-      //     allordersOrganized,
-      //     currentYear
-      //   );
-      //   const allOrdersThisYearSum = allOrdersMonthlyValues.reduce(
-      //     (prev, curr) => prev + curr.total,
-      //     0
-      //   );
 
-      //   const allOrdersCurrentMonthSum = allOrdersMonthlyValues.find(
-      //     (el) => el.month === currentMonth
-      //   )?.total;
-
-      //   const allOrdersThisMonthLastYear = getSpecificYearOrMonthSum(
-      //     allordersOrganized,
-      //     currentYear - 1,
-      //     currentMonth
-      //   );
-
-      //   const allOrdersThisWeekSum = getThisWeekOrdersSum(allordersOrganized);
-
+      const barChart = getBarChart(allVisitsOrganized);
       return res.send({
         visits,
         monthlyVisits,
-        organizeByYear: allVisitsOrganized,
+        organizedByYear: allVisitsOrganized,
         thisYearVisitsSum,
         thisMonthVisitsSum,
         thisMonthLastYearVisitsSum,
         lastYearVisitsSum,
+        barChart,
       });
     } else {
       return res.send({ message: "No data in database." });
