@@ -1,8 +1,6 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 
-// Fake data
-import { fakeData } from "../../public/data";
 // Components
 
 // Blocks
@@ -24,8 +22,6 @@ const Visits = () => {
       }
     } catch (err) {
       console.log("Server is down!", err);
-      console.log("fakeData: ", fakeData);
-      setData(fakeData);
     }
   };
 
