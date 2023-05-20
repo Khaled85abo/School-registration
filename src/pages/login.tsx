@@ -133,7 +133,7 @@ const Login = () => {
   }
 
   console.log(allVisits);
-  return <AccountForm />;
+  return <AccountForm closeLogin={() => {}} />;
 };
 
 export default Login;
