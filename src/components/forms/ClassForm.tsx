@@ -51,9 +51,9 @@ const ClassForm = ({
               updateFields({ grade: e.target.value });
             }}>
             <option value="">--Please choose an option--</option>
-            {Object.keys(CLASSES).map((key, index) => (
-              <option key={index} value={key}>
-                {key}
+            {Object.entries(CLASSES).map(([key, value], index) => (
+              <option key={index} value={value}>
+                {value}
               </option>
             ))}
           </select>

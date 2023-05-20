@@ -34,7 +34,7 @@ export type SingleVisit = {
   teacher: string;
   phone?: string;
   email?: string;
-  museumId: number | null;
+  museumId: number | string | null;
   testCreateAt?: Date | string;
 };
 export type DatabaseSingleVisit = SingleVisit & {
@@ -50,10 +50,10 @@ const INITIAL_DATA: SingleVisit = {
   studentsCount: 15,
   teachersCount: 3,
   havePayedTour: false,
-  teacher: "Khaled Abo",
-  phone: "0762440447",
+  teacher: "Johan Doe",
+  phone: "076265747",
   email: "",
-  museumId: 12313,
+  museumId: null,
 };
 const inter = Inter({ subsets: ["latin"] });
 
@@ -131,6 +131,9 @@ export default function Home() {
     }
   };
 
+  const setMuseumId = (id: number | string) => {
+    updateFields({ museumId: id });
+  };
   useEffect(() => {
     window.addEventListener("keydown", toggleLgoinListner);
 
@@ -140,7 +143,10 @@ export default function Home() {
   if (showLogin) {
     return (
       <AppWrapper className="bg-img">
-        <LoginForm />
+        <LoginForm
+          closeLogin={() => setShowLogin(false)}
+          setMuseumId={setMuseumId}
+        />
       </AppWrapper>
     );
   }

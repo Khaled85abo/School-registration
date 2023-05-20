@@ -1,4 +1,3 @@
-import AccountForm from "@/components/forms/LoginForm";
 import { Class, SingleVisit } from ".";
 
 const countries = [
@@ -133,7 +132,7 @@ const Login = () => {
   }
 
   console.log(allVisits);
-  return <AccountForm />;
+  return <div>Data extractor</div>;
 };
 
 export default Login;
