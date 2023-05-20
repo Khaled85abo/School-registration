@@ -5,13 +5,14 @@ import sweden from "../../assets/svg/sweden.svg";
 import world from "../../assets/svg/world.svg";
 import { useEffect, useState } from "react";
 import { useWindowSize } from "@/hooks/windowWidth";
+import { SingleVisit } from "@/pages";
 
 type Location = {
   country: string;
 };
 
 type ChooseLocationProps = Location & {
-  updateFields: (fields: Location) => void;
+  updateFields: (fields: Partial<SingleVisit>) => void;
 };
 const ChooseLocation = ({ country, updateFields }: ChooseLocationProps) => {
   const [active, setActive] = useState<number>(0);
@@ -21,10 +22,10 @@ const ChooseLocation = ({ country, updateFields }: ChooseLocationProps) => {
     <>
       <StyledApp>
         <StyledButton
-          className={active === 1 || country === "World" ? "active" : ""}
+          className={active === 1 || country !== "Sweden" ? "active" : ""}
           onClick={() => {
             setActive((active: number) => (active = 1));
-            updateFields({ country: "World" });
+            updateFields({ country: "world", municipality: "" });
           }}>
           <Image src={world} alt="World map" width={windowSize.width / 5} />
         </StyledButton>

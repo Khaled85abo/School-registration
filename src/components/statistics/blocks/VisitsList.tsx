@@ -55,6 +55,9 @@ const StyledVisits = styled.div`
     height: fit-content;
     padding: 5px 100px;
     padding-bottom: 63px;
+    @media (max-width: 768px) {
+      padding: 1rem;
+    }
   }
 
   .visit {
@@ -98,6 +101,12 @@ const StyledVisits = styled.div`
 
     .currency {
       font-size: 1.3vh;
+    }
+    @media (max-width: 768px) {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
     }
   }
 `;

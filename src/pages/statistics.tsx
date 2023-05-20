@@ -55,6 +55,9 @@ const Statistics = () => {
 export default Statistics;
 
 const StyledIndex = styled.div`
+  @media (max-width: 768px) {
+    display: none;
+  }
   background: linear-gradient(109.8deg, #eceef2 0%, #f6f9f8 100%);
   font-family: "Arimo", sans-serif;
   .viewContainer {
