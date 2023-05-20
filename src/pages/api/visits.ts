@@ -8,6 +8,7 @@ export default async function handler(
 ) {
   try {
     const visits = await prisma.sigleVisit.findMany({
+      take: 50,
       orderBy: {
         createdAt: "desc",
       },

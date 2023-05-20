@@ -87,6 +87,12 @@ const StyledHeader = styled.div<Props>`
       grid-template-columns: 15% 15% 15% 15% 20% 20%;
     }
   }
+
+  @media (max-width: 768px) {
+    .ordersTitles {
+      display: none;
+    }
+  }
 `;
 
 export default Header;

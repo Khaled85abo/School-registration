@@ -57,6 +57,9 @@ const StyledIndex = styled.div`
   .viewContainer {
     // height: 90vh;
     padding: 4vh;
+    @media (max-width: 768px) {
+      padding: 0.5rem;
+    }
   }
   ul {
     list-style: none;

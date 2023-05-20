@@ -11,6 +11,7 @@ import AddressForm from "../components/forms/AddressForm";
 import TeacherForm from "../components/forms/TeacherForm";
 import ClassForm from "../components/forms/ClassForm";
 import LoginForm from "../components/forms/LoginForm";
+import TextLoader from "@/components/loader/TextLoader";
 
 export const CLASSES = {
   kinderGarden: "Kinder Garden",
@@ -46,7 +47,7 @@ const INITIAL_DATA: SingleVisit = {
   country: "",
   school: "Test school",
   grade: CLASSES.kinderGarden,
-  municipality: "Stockholm",
+  municipality: "",
   studentsCount: 15,
   teachersCount: 3,
   havePayedTour: false,
@@ -55,12 +56,12 @@ const INITIAL_DATA: SingleVisit = {
   email: "",
   museumId: null,
 };
-const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const [data, setData] = useState(INITIAL_DATA);
   const [showLogin, setShowLogin] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  const [sendingData, setSendingData] = useState(false);
   function updateFields(fields: Partial<SingleVisit>) {
     setData((prev) => {
       return { ...prev, ...fields };
@@ -109,6 +110,7 @@ export default function Home() {
     e.preventDefault();
     if (currentStepIndex == steps.length - 1) {
       setDisabled(true);
+      setSendingData(true);
       console.log("submitting Data to be saved: ", data);
       const res = await fetch("/api/register", {
         method: "Post",
@@ -119,6 +121,7 @@ export default function Home() {
         body: JSON.stringify(data),
       });
       goTo(0);
+      setSendingData(false);
       setDisabled(false);
     } else {
       next();
@@ -171,7 +174,9 @@ export default function Home() {
           {
             <button type="submit" disabled={!data.country || disabled}>
               {isLastStep ? (
-                <span>Send</span>
+                <span>
+                  {sendingData ? <TextLoader text="Sending" /> : " Send"}
+                </span>
               ) : (
                 <Image src={nextSvg} height="50" width={50} alt="next" />
               )}

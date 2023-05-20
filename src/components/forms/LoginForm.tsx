@@ -47,7 +47,7 @@ const LoginForm = ({ closeLogin, setMuseumId }: LoginFormProps) => {
       if ("error" in data) {
         setLoginData((prev) => ({ ...prev, error: data.error }));
       } else {
-        setMuseumId(data.museumId);
+        setMuseumId(data.museum.id);
         closeLogin();
       }
       console.log("data from login", data);
